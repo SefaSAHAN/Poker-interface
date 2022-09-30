@@ -353,10 +353,10 @@ class Game(QMainWindow):
  
     def call_btn(self):    
         self.maxvalue_find()
-        # if self.playerbudgetsdic[self.player]<max(self.total_bet.values()):
-        #     self.all_in_list.append(self.player)  
-        #     self.playerbetdic.pop(self.player)
-        #     self.playerbudgetsdic[self.player]=0
+        if self.budget_copy[self.player]<max(self.total_bet.values()):
+            self.all_in_list.append(self.player)  
+            self.playerbetdic.pop(self.player)
+            self.playerbudgetsdic[self.player]=0
        
         if self.count_bet==0:
             self.screen.slider.setValue(self.max_bet)
