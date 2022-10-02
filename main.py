@@ -51,7 +51,11 @@ class Game(QMainWindow):
             self.screen.p1_card2.setPixmap(QtGui.QPixmap(f":/icon/{self.playercardsdic[self.player][1]}.png"))        
         self.playerbudgetsdic={}
         for i in self.playerlist:
-            self.playerbudgetsdic[i]=500 
+            self.playerbudgetsdic[i]=500
+        self.playerbudgetsdic['player2']=300
+        self.playerbudgetsdic['player3']=350
+        self.playerbudgetsdic['player4']=850
+
         self.budget_copy=self.playerbudgetsdic.copy()   
         self.budgetassign()
         self.playerbetdic={}
@@ -167,6 +171,7 @@ class Game(QMainWindow):
         self.budget_check_dict=self.playerbudgetsdic.copy()
         self.screen.btn_bet.setEnabled(True)
         self.screen.slider.setEnabled(True)
+        self.all_in_list.clear()
 
     def bet_btn(self):     
         self.playerbetdic[self.player]=self.slider_value
@@ -247,6 +252,44 @@ class Game(QMainWindow):
         if self.player not in self.playerbetdic.keys():
             self.playercountincrease()
             self.img_assign()
+        if self.budget_copy[self.player]<=max(self.total_bet.values()):
+          
+                self.screen.btn_bet.setEnabled(False)
+                self.screen.slider.setEnabled(False)
+                self.screen.btn_call.setText("ALL IN")
+                self.screen.btn_call.setStyleSheet("border:none;\n"
+"font: 12pt \"MS Shell Dlg 2\";\n"
+"color: rgb(0, 0, 0);\n"
+"border-radius:20px;\n"
+"background-color: rgb(255, 255, 0);\n"
+"\n"
+"")
+        elif self.count_bet==0 and self.budget_copy[self.player]>max(self.total_bet.values()):
+                self.screen.btn_bet.setEnabled(True)
+                self.screen.slider.setEnabled(True)
+                self.screen.btn_call.setText("CALL")
+                self.screen.btn_call.setStyleSheet("border:none;\n"
+"font: 12pt \"MS Shell Dlg 2\";\n"
+"color: rgb(255, 255, 255);\n"
+"border-radius:20px;\n"
+"background-color: rgb(0, 0, 255);\n"
+"\n"
+"")
+        else:
+                self.screen.btn_call.setText("CALL")
+                self.screen.btn_call.setStyleSheet("border:none;\n"
+"font: 12pt \"MS Shell Dlg 2\";\n"
+"color: rgb(255, 255, 255);\n"
+"border-radius:20px;\n"
+"background-color: rgb(0, 0, 255);\n"
+"\n"
+"")
+            
+        
+            
+
+            
+
 
     def budgetassign(self):
         self.screen.label_p1budget.setText(str(self.playerbudgetsdic['player1']))
@@ -353,10 +396,15 @@ class Game(QMainWindow):
  
     def call_btn(self):    
         self.maxvalue_find()
-        if self.budget_copy[self.player]<max(self.total_bet.values()):
+        if self.budget_copy[self.player]<=max(self.total_bet.values()):
             self.all_in_list.append(self.player)  
             self.playerbetdic.pop(self.player)
             self.playerbudgetsdic[self.player]=0
+            self.resigned_image('ALL IN',14,'rgb(255,255,0)')
+            try:
+                self.bet_check_dict.pop(self.player)
+            except:
+                pass
        
         if self.count_bet==0:
             self.screen.slider.setValue(self.max_bet)
@@ -419,6 +467,13 @@ class Game(QMainWindow):
                     self.screen.btn_bet.setEnabled(True)
                     self.screen.slider.setEnabled(True)
                     self.a=self.player
+                    while True:
+                        if self.a in self.playerbetdic:
+                            break
+                        if self.a=='player1':
+                            self.a='player6'
+                        else:    
+                            self.a='player'+str(int(self.a[-1])-1)
                     self.count_bet=0
                 else:    
                     if self.turn_count==4:
