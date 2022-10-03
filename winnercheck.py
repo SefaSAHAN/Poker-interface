@@ -6,44 +6,44 @@ import itertools
 
 class winner():
 
-	def __init__(self,playercardsdic,boardcards):
-		self.playercardsdic = playercardsdic
-		self.boardcards = boardcards
-		self.playercontdic={}
-		self.higherwinnercheck={}
-		self.winnerlist=[]
-		self.controlelement=True
-		self.resultcardsdic()
+	def __init__(self,player_card_disc,board_cards_list):
+		self.player_card_disc = player_card_disc
+		self.board_cards_list = board_cards_list
+		self.player_control_dic={}
+		self.higher_winner_check_dict={}
+		self.winner_list=[]
+		self.control_element=True
+		self.result_card_dic()
 		self.royalflush()
-		if self.controlelement==True:
-			self.flushstraight()
-		if self.controlelement==True:
-			self.fourofakind()
-		if self.controlelement==True:
-			self.fullhouse()
-		if self.controlelement==True:
-			self.flushcheck()
-		if self.controlelement==True:
+		if self.control_element==True:
+			self.flush_straight()
+		if self.control_element==True:
+			self.four_of_a_kind()
+		if self.control_element==True:
+			self.full_house()
+		if self.control_element==True:
+			self.flush_check()
+		if self.control_element==True:
 			self.straight()
-		if self.controlelement==True:
-			self.threeofakind()
-		if self.controlelement==True:
-			self.twopair()
-		if self.controlelement==True:
-			self.onepair()
-		if self.controlelement==True:
-			self.highercard()
-		print(self.winnerlist)
+		if self.control_element==True:
+			self.three_of_a_kind()
+		if self.control_element==True:
+			self.two_pair()
+		if self.control_element==True:
+			self.one_pair()
+		if self.control_element==True:
+			self.higher_card()
+		print(self.winner_list)
 
-	def resultcardsdic(self):
-		for i,j in self.playercardsdic.items():
+	def result_card_dic(self):
+		for i,j in self.player_card_disc.items():
 				a=[]
 				a.extend(j)
-				a.extend(self.boardcards)
-				self.playercontdic[i]=a
+				a.extend(self.board_cards_list)
+				self.player_control_dic[i]=a
 
 	def dublicatecheckdic(self):
-		for e, i in self.playercontdic.items():
+		for e, i in self.player_control_dic.items():
 			kontroldublicate=[]
 			for j in i:
 				a= j[:-1]
@@ -60,18 +60,17 @@ class winner():
 				except:
 					pass
 				kontroldublicate.append(a)		
-			self.playercontdic[e]=kontroldublicate
+			self.player_control_dic[e]=kontroldublicate
 
-		for d,i in self.playercontdic.items():
+		for d,i in self.player_control_dic.items():
 			e={k:i.count(k) for k in set(i)}
-			self.playercontdic[d]=e
+			self.player_control_dic[d]=e
 
-	def f_higher_winnercheck(self):
-		
+	def f_higher_winnercheck(self):		
 		b={}
 		check=True
 		while check:
-			for i,j in self.higherwinnercheck.items():
+			for i,j in self.higher_winner_check_dict.items():
 				k=max(j)
 				b[i]=k
 			x=''
@@ -86,28 +85,25 @@ class winner():
 			try:
 				for i in d:
 					b.pop(i)
-					self.higherwinnercheck.pop(i)
+					self.higher_winner_check_dict.pop(i)
 			except:
 				pass
-			for i,j in self.higherwinnercheck.items():        
+			for i,j in self.higher_winner_check_dict.items():        
 				j.pop(0)
-			groups = itertools.groupby(self.higherwinnercheck.values()) 
+			groups = itertools.groupby(self.higher_winner_check_dict.values()) 
 			next(groups, None)
 			if next(groups, None) is None:     
 				check=False 
 			
-			if len(self.higherwinnercheck)== 1:
+			if len(self.higher_winner_check_dict)== 1:
 				check=False   
 		
-		for i in self.higherwinnercheck.keys():
-			self.winnerlist.append(i)
-
-
+		for i in self.higher_winner_check_dict.keys():
+			self.winner_list.append(i)
 
 	def royalflush(self):	
-		self.resultcardsdic()
-			
-		for i ,j in self.playercontdic.items():
+		self.result_card_dic()			
+		for i ,j in self.player_control_dic.items():
 			royalclubs=["AC","KC","QC","JC","10C"]
 			a=[]
 			a.extend(j)
@@ -116,11 +112,11 @@ class winner():
 					a.remove(element)
 			x=len(a)
 			if x==2:
-				self.winnerlist.append(i)
-				self.winnerlist.append('Royalflush')
-				self.controlelement=False
+				self.winner_list.append(i)
+				self.winner_list.append('Royalflush')
+				self.control_element=False
 		
-		for i ,j in self.playercontdic.items():
+		for i ,j in self.player_control_dic.items():
 			royaldiamonds=["AD","KD","QD","JD","10D"]
 			a=[]
 			a.extend(j)
@@ -129,11 +125,11 @@ class winner():
 					a.remove(element)
 			x=len(a)
 			if x==2:
-				self.winnerlist.append(i)
-				self.winnerlist.append('Royalflush')
-				self.controlelement=False
+				self.winner_list.append(i)
+				self.winner_list.append('Royalflush')
+				self.control_element=False
 
-		for i ,j in self.playercontdic.items():
+		for i ,j in self.player_control_dic.items():
 			royalhearts=["AH","KH","QH","JH","10H"]
 			a=[]
 			a.extend(j)
@@ -142,11 +138,11 @@ class winner():
 					a.remove(element)
 			x=len(a)
 			if x==2:
-				self.winnerlist.append(i)
-				self.winnerlist.append('Royalflush')
-				self.controlelement=False
+				self.winner_list.append(i)
+				self.winner_list.append('Royalflush')
+				self.control_element=False
 
-		for i ,j in self.playercontdic.items():
+		for i ,j in self.player_control_dic.items():
 			royalspades=["AS","KS","QS","JS","10S"]
 			a=[]
 			a.extend(j)
@@ -155,18 +151,18 @@ class winner():
 					a.remove(element)
 			x=len(a)
 			if x==2:
-				self.winnerlist.append(i)
-				self.winnerlist.append('Royalflush')
-				self.controlelement=False
+				self.winner_list.append(i)
+				self.winner_list.append('Royalflush')
+				self.control_element=False
 
-	def flushstraight(self):
+	def flush_straight(self):
 		resultdict={}
-		self.resultcardsdic()
+		self.result_card_dic()
 		e=0
 		f=0
 		g=0
 		h=0	
-		for j in self.boardcards:
+		for j in self.board_cards_list:
 			i=j[-1]
 			if i=="C":
 				e+=1
@@ -186,22 +182,22 @@ class winner():
 			symbol="D"
 		else:
 			symbol='&'
-		for i,j in self.playercontdic.items():
+		for i,j in self.player_control_dic.items():
 			b=[]
 		
 			for k in j:
 				if k[-1]==symbol:
 					b.append(k)
-			self.playercontdic[i]=b	
+			self.player_control_dic[i]=b	
 								
-		for e,i in self.playercontdic.items():
+		for e,i in self.player_control_dic.items():
 			kontroldublicate=[]
 			for j in i:
 				a= j[:-1]
 				kontroldublicate.append(a)		
-			self.playercontdic[e]=kontroldublicate
+			self.player_control_dic[e]=kontroldublicate
 
-		for e,i in self.playercontdic.items():
+		for e,i in self.player_control_dic.items():
 			newliste=[]
 			for j in i:
 				if j=="A":
@@ -222,7 +218,7 @@ class winner():
 
 			for k in grplist:
 				if len(k)>4:
-					self.controlelement=False
+					self.control_element=False
 					resultdict[e]=max(k)
 		try:
 			key = max(resultdict, key = lambda z: resultdict[z])
@@ -233,41 +229,39 @@ class winner():
 		for i,j in resultdict.items():
 			if j==resultdict[key]:
 				d+=1
-				winnercheck[i]=self.playercontdic[i]
+				winnercheck[i]=self.player_control_dic[i]
 		if d==1:
-			self.winnerlist.append(key)
-			self.winnerlist.append('Flushstraiht')
+			self.winner_list.append(key)
+			self.winner_list.append('Flushstraiht')
 			
 		if d>1:
 			a=[]
 			for i in winnercheck.keys():
 				a.append(i)
-			self.winnerlist.extend(a)
-			self.winnerlist.append('Flushstraiht')	
+			self.winner_list.extend(a)
+			self.winner_list.append('Flushstraiht')	
 			
-	def fourofakind(self):
-
-		self.resultcardsdic()
+	def four_of_a_kind(self):
+		self.result_card_dic()
 		self.dublicatecheckdic()
-
 		winnercheck={}
-		for i,j in self.playercontdic.items():	
+		for i,j in self.player_control_dic.items():	
 			for k,l in j.items():
 				if l==4:
-					self.controlelement=False
+					self.control_element=False
 					winnercheck[i]=k
 		try:			
 			key = max(winnercheck, key = lambda z: winnercheck[z])
-			self.winnerlist.append(key)
-			self.winnerlist.append('Fourofakind')			
+			self.winner_list.append(key)
+			self.winner_list.append('Four of a kind')			
 		except:
 			pass
 
-	def fullhouse(self):
-		self.resultcardsdic()
+	def full_house(self):
+		self.result_card_dic()
 		self.dublicatecheckdic()		
 		list2={}
-		for d,i in self.playercontdic.items():
+		for d,i in self.player_control_dic.items():
 			
 			for j,k in i.items():
 				x=0
@@ -289,7 +283,7 @@ class winner():
 			if len(j)>1:
 				list4=[]
 				list5=[]
-				self.controlelement=False
+				self.control_element=False
 				for k,l in j.items():
 					if l==3:
 						list4.append(k)
@@ -312,14 +306,14 @@ class winner():
 			for i,j in list8.items():
 				if j<list6[key]:
 					list6.pop(i)
-					list7.pop(i)
-			
+					list7.pop(i)			
 			key= max(list7, key=list7.get)
 			list8=list7.copy()
+
 			for i,j in list8.items():
 				if j<list7[key]:
 					list7.pop(i)
-		
+
 			groups = itertools.groupby(list6.values()) 
 			next(groups, None)
 			if next(groups, None) is None:
@@ -327,21 +321,21 @@ class winner():
 				next(groups1, None)
 				if next(groups1, None) is None:
 					for i in list7.keys():
-						self.winnerlist.append(i)
-					self.winnerlist.append('Fullhouse')
+						self.winner_list.append(i)
+					self.winner_list.append('Full house')
 				else:
 					key= max(list6, key=list7.get)
-					self.winnerlist.append(key)
-					self.winnerlist.append('Fullhouse')
+					self.winner_list.append(key)
+					self.winner_list.append('Full house')
 			else:
 				key= max(list6, key=list6.get)
-				self.winnerlist.append(key)
-				self.winnerlist.append('Fullhouse')
+				self.winner_list.append(key)
+				self.winner_list.append('Full house')
 
-	def flushcheck(self):	
+	def flush_check(self):	
 		controldict1={}
-		self.resultcardsdic()
-		for k,v in self.playercontdic.items():
+		self.result_card_dic()
+		for k,v in self.player_control_dic.items():
 			kontrolflush=[]
 			for j in v:
 				a=j[-1]
@@ -363,22 +357,22 @@ class winner():
 					h+=1
 			if e>4 :
 				symbol='C'
-				self.controlelement=False	
-				self.higherwinnercheck[k]=self.playercontdic[k]
+				self.control_element=False	
+				self.higher_winner_check_dict[k]=self.player_control_dic[k]
 			elif f>4 :
 				symbol='H'
-				self.controlelement=False	
-				self.higherwinnercheck[k]=self.playercontdic[k]
+				self.control_element=False	
+				self.higher_winner_check_dict[k]=self.player_control_dic[k]
 			if g>4 :
 				symbol='S'
-				self.controlelement=False	
-				self.higherwinnercheck[k]=self.playercontdic[k]
+				self.control_element=False	
+				self.higher_winner_check_dict[k]=self.player_control_dic[k]
 			if h>4 :
 				symbol='D'
-				self.controlelement=False	
-				self.higherwinnercheck[k]=self.playercontdic[k]
+				self.control_element=False	
+				self.higher_winner_check_dict[k]=self.player_control_dic[k]
 		
-		for e, i in self.higherwinnercheck.items():
+		for e, i in self.higher_winner_check_dict.items():
 			kontroldublicate=[]
 			for j in i:
 				if j[-1]==symbol:
@@ -397,20 +391,20 @@ class winner():
 						pass
 					kontroldublicate.append(a)
 			kontroldublicate.sort(reverse=True)		
-			self.higherwinnercheck[e]=kontroldublicate
+			self.higher_winner_check_dict[e]=kontroldublicate
 		self.f_higher_winnercheck()
-		if len(self.winnerlist)>0:
-			self.winnerlist.append('Flush')
+		if len(self.winner_list)>0:
+			self.winner_list.append('Flush')
 					
 	def straight(self):	
-		self.playercontdic={}
+		self.player_control_dic={}
 		resultdict={}
 		d=0
-		for i,j in self.playercardsdic.items():
+		for i,j in self.player_card_disc.items():
 			a=[]
 			kontroldublicate=[]
 			a.extend(j)
-			a.extend(self.boardcards)
+			a.extend(self.board_cards_list)
 			for j in a:
 				b= j[:-1]
 				kontroldublicate.append(b)
@@ -434,10 +428,9 @@ class winner():
 			grplist = [list(group) for group in mit.consecutive_groups(newliste)]		
 			for j in grplist:
 				if len(j)>4:
-					self.controlelement=False
-					self.playercontdic[i]=j
+					self.control_element=False
+					self.player_control_dic[i]=j
 					resultdict[i]=max(j)
-
 		try:
 			key = max(resultdict, key = lambda z: resultdict[z])
 		except:
@@ -447,28 +440,27 @@ class winner():
 		for i,j in resultdict.items():
 			if j==resultdict[key]:
 				d+=1
-				winnercheck[i]=self.playercontdic[i]
+				winnercheck[i]=self.player_control_dic[i]
 		if d==1:
-			self.winnerlist.append(key)
-			self.winnerlist.append('Straight')
-			
+			self.winner_list.append(key)
+			self.winner_list.append('Straight')			
 		if d>1:
 			a=[]
 			for i in winnercheck.keys():
 				a.append(i)
-			self.winnerlist.extend(a)
-			self.winnerlist.append('Straight')
+			self.winner_list.extend(a)
+			self.winner_list.append('Straight')
 
-	def threeofakind(self):	
-		self.resultcardsdic()
+	def three_of_a_kind(self):	
+		self.result_card_dic()
 		self.dublicatecheckdic()
 		winnercheck={}
-		for d,i in self.playercontdic.items():
+		for d,i in self.player_control_dic.items():
 			for j,k in i.items():
 				
 				list1=[]
 				if k==3:
-					self.controlelement=False
+					self.control_element=False
 					list1.append(j)
 					winnercheck[d]=j
 		try:
@@ -476,41 +468,50 @@ class winner():
 			key2=winnercheck[key]
 		except:
 			pass
-
 		c=0
 		for i,j in winnercheck.items():
 			if j==key2:
-				c+=1
-		
+				c+=1		
 		if c==1:
 			try:
 				key = max(winnercheck, key = lambda z: winnercheck[z])
-				self.winnerlist.append(key)
-				self.winnerlist.append('Three of a kind')			
+				self.winner_list.append(key)
+				self.winner_list.append('Three of a kind')			
 			except:
 				pass
-		winnercheck2={}
-		
+		winnercheck2={}		
 		if c>1:
-			for i,j in self.playercontdic.items():
+			for i,j in self.player_control_dic.items():
 				list7=[]
 				for k,l in j.items():
 					if l==3:
 						winnercheck2[i]=j
-
 			for i,j in winnercheck2.items():
 				list7=[]
 				for k,l in j.items():
 					list7.append(k)
 				list7.sort(reverse=False)
-				self.higherwinnercheck[i]=list7
+				self.higher_winner_check_dict[i]=list7
 			self.f_higher_winnercheck()
-			self.winnerlist.append('Three of a kind')
+			self.winner_list.append('Three of a kind')
+
+		if len(self.winner_list)>2:
+			self.higher_winner_check_dict.clear()
+			for i in self.winner_list[:-1]:
+				a=[]
+				for k ,l in self.player_control_dic.items():
+					if k == i:
+						a.extend(l.keys())
+				a.sort(reverse=True)
+				self.higher_winner_check_dict[i]=a
+			self.winner_list.clear()
+			self.f_higher_winnercheck()
+			self.winner_list.append('Three of a kind')
 			
-	def twopair(self):		
-		self.resultcardsdic()
+	def two_pair(self):		
+		self.result_card_dic()
 		self.dublicatecheckdic()
-		for d,i in self.playercontdic.items():
+		for d,i in self.player_control_dic.items():
 			list1=[]
 
 			for j,k in i.items():
@@ -519,28 +520,41 @@ class winner():
 					list1.append(j)
 		
 			if len(list1)>1:
-				self.controlelement=False
+				self.control_element=False
 				try:
 					list1.sort(reverse=True)
-					self.higherwinnercheck[d]=list1
+					self.higher_winner_check_dict[d]=list1
 				except:
 					pass
 				
 		try:
 			self.f_higher_winnercheck()
-			if len(self.higherwinnercheck)>0:
-				self.winnerlist.append('Twopair')	
+			if len(self.higher_winner_check_dict)>0:
+				self.winner_list.append('Two pair')	
 		except:
 			pass
 
-	def onepair(self):	
-		self.resultcardsdic()
+		if len(self.winner_list)>2:
+			self.higher_winner_check_dict.clear()
+			for i in self.winner_list[:-1]:
+				a=[]
+				for k ,l in self.player_control_dic.items():
+					if k == i:
+						a.extend(l.keys())
+				a.sort(reverse=True)
+				self.higher_winner_check_dict[i]=a
+			self.winner_list.clear()
+			self.f_higher_winnercheck()
+			self.winner_list.append('Two pair')
+
+	def one_pair(self):	
+		self.result_card_dic()
 		self.dublicatecheckdic()			
 		dictionary1={'player1':0}
-		for d,i in self.playercontdic.items():
+		for d,i in self.player_control_dic.items():
 			for j,k in i.items():
 				if k==2:
-					self.controlelement=False
+					self.control_element=False
 					try:
 						key1= max(dictionary1, key = lambda z: dictionary1[z])
 					except:
@@ -559,11 +573,11 @@ class winner():
 		if len(dictionary1)==1:
 			for i,j in dictionary1.items():
 				if j>0:
-					self.winnerlist.append(i)
+					self.winner_list.append(i)
 					
 		elif len(dictionary1)>1:
 			for i,j in dictionary1.items():
-				dictionary2[i]=self.playercontdic[i]
+				dictionary2[i]=self.player_control_dic[i]
 			for i,j in dictionary2.items():
 				newlist3=[]				
 				try:
@@ -571,24 +585,24 @@ class winner():
 						newlist3.append(k)
 					if len(newlist3)>0:
 						newlist3.sort(reverse=True)
-						self.higherwinnercheck[i]=newlist3						
+						self.higher_winner_check_dict[i]=newlist3						
 				except:
 					pass
 		self.f_higher_winnercheck()
-		if len(self.winnerlist)>0:
-			self.winnerlist.append('Onepair')
+		if len(self.winner_list)>0:
+			self.winner_list.append('One pair')
 
-	def highercard(self):
-		self.resultcardsdic()
+	def higher_card(self):
+		self.result_card_dic()
 		self.dublicatecheckdic()		
-		for i,j in self.playercontdic.items():
+		for i,j in self.player_control_dic.items():
 			liste=[]
 			for k in j.keys():
 				liste.append(k)
 			liste.sort(reverse=True)
-			self.higherwinnercheck[i]=liste
+			self.higher_winner_check_dict[i]=liste
 		self.f_higher_winnercheck()
-		self.winnerlist.append('Highercard')
+		self.winner_list.append('Higher card')
 	
 if __name__ == "__main__":
 	symbol=["D","C","H","S"]
@@ -616,17 +630,17 @@ if __name__ == "__main__":
 	for i in playerlist0:
 		playername="player"+str(i)
 		playerlist.append(playername)
-	boardcards=[]
+	board_cards_list=[]
 	
 	def board(a):
-		boardcards.extend(random.sample(deck,a))
-		for j in boardcards:
+		board_cards_list.extend(random.sample(deck,a))
+		for j in board_cards_list:
 			try:
 				deck.remove(j)
 			except:
 				pass
-		print("board:",boardcards)
-		return boardcards
+		print("board:",board_cards_list)
+		return board_cards_list
 
 	playerhands=[]
 	for i in playerlist:
@@ -634,8 +648,8 @@ if __name__ == "__main__":
 		playerhands.append(c)
 		for j in c:
 			deck.remove(j)
-	playercardsdic= dict(zip(playerlist,playerhands))
-	print(playercardsdic)
+	player_card_disc= dict(zip(playerlist,playerhands))
+	print(player_card_disc)
 	board(5)
-	win = winner(playercardsdic,boardcards)
-	a = win.winnerlist
+	win = winner(player_card_disc,board_cards_list)
+	a = win.winner_list
