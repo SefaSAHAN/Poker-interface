@@ -34,8 +34,7 @@ class Game(QMainWindow):
         self.screen.btn_fold.clicked.connect(self.fold_btn)
         self.screen.btn_bet.clicked.connect(self.bet_btn)
         self.screen.slider.valueChanged.connect(self.slider_increase)
-        self.player_list=[]
-        self.second_pot=[]    
+        self.player_list=[]  
         for i in range(6):
             self.player_list.append(f"player{i+1}")
         self.player_hand=[]
@@ -55,7 +54,6 @@ class Game(QMainWindow):
         self.player_budget_dic['player2']=300
         self.player_budget_dic['player3']=350
         self.player_budget_dic['player4']=850
-
         self.budget_copy=self.player_budget_dic.copy()   
         self.budget_assign()
         self.player_bet_dic={}
@@ -69,16 +67,35 @@ class Game(QMainWindow):
         b=random.sample(self.deck,5)
         self.board_cards_list.extend(b)
         for j in b:
-            self.deck.remove(j)
-        
+            self.deck.remove(j)        
         for i in self.player_list:
             self.total_bet[i]=0  
-
         self.final_winner=[]
          
         #  (to finish the game quickly use this code)
         # for i in range(23): 
         #     self.call_btn()
+
+    def final_card_show_up(self):
+        for i in self.player_list:            
+            if i == 'player1':
+                self.screen.p1_card1.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[i][0]}.png"))
+                self.screen.p1_card2.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[i][1]}.png"))
+            elif i == 'player2':
+                self.screen.p2_card1.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[i][0]}.png"))
+                self.screen.p2_card2.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[i][1]}.png"))           
+            elif i == 'player3':
+                self.screen.p3_card1.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[i][0]}.png"))
+                self.screen.p3_card2.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[i][1]}.png")) 
+            elif i == 'player4':
+                self.screen.p4_card1.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[i][0]}.png"))
+                self.screen.p4_card2.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[i][1]}.png"))
+            elif i == 'player5':
+                self.screen.p5_card1.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[i][0]}.png"))
+                self.screen.p5_card2.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[i][1]}.png"))           
+            elif i== 'player6':
+                self.screen.p6_card1.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[i][0]}.png"))
+                self.screen.p6_card2.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[i][1]}.png"))
 
     def pop_up(self):
         icon = QtGui.QIcon()
@@ -105,32 +122,14 @@ class Game(QMainWindow):
         self.messagebox.setWindowIcon(icon)
         self.messagebox.exec_()
 
-
     def finish_turn(self):
+        self.budget_assign()
         self.img_assign()
-        for i in self.player_list:            
-            if i == 'player1':
-                self.screen.p1_card1.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[i][0]}.png"))
-                self.screen.p1_card2.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[i][1]}.png"))
-            elif i == 'player2':
-                self.screen.p2_card1.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[i][0]}.png"))
-                self.screen.p2_card2.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[i][1]}.png"))           
-            elif i == 'player3':
-                self.screen.p3_card1.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[i][0]}.png"))
-                self.screen.p3_card2.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[i][1]}.png")) 
-            elif i == 'player4':
-                self.screen.p4_card1.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[i][0]}.png"))
-                self.screen.p4_card2.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[i][1]}.png"))
-            elif i == 'player5':
-                self.screen.p5_card1.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[i][0]}.png"))
-                self.screen.p5_card2.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[i][1]}.png"))           
-            elif i== 'player6':
-                self.screen.p6_card1.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[i][0]}.png"))
-                self.screen.p6_card2.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[i][1]}.png"))
-        
+        self.final_card_show_up()    
         self.total_pot=sum(self.total_bet.values())
+        self.screen.pot.setText(str(sum(self.total_bet.values())))
+
         while len(self.all_in_dict)>0:
-            self.img_assign
             min_value = min(self.all_in_dict.values())
             a={key:value for key, value in self.all_in_dict.items() if value == min_value}
             win = winner(self.player_card_disc,self.board_cards_list)
@@ -169,27 +168,31 @@ class Game(QMainWindow):
                         self.final_winner.append(i)
                 for i in self.final_winner:
                     self.player_budget_dic[i]+=int(self.winner_pot/b)            
-                for i in self.final_winner:
-                    self.total_bet[i]=0
 
+            self.total_pot-=self.winner_pot  
             if self.winner_pot>0:
-                self.img_assign
+                self.final_card_show_up()
                 self.pop_up()
-            self.total_pot-=self.winner_pot                       
+                self.budget_assign()
+                self.screen.pot.setText(str(sum(self.total_bet.values())))
+                                  
             for i,j in a.items():
-                self.player_card_disc.pop(i)
                 self.all_in_dict.pop(i)
+                self.player_card_disc.pop(i)
+                
             self.final_winner.clear()
             self.winnerpot=0
-        if len(self.player_card_disc)>1 and self.total_pot>0:
+
+        if self.total_pot>0:            
             win = winner(self.player_card_disc,self.board_cards_list)
             self.winner_pop_up_list = win.winner_list
             self.final_winner= self.winner_pop_up_list[:-1]
+            self.final_card_show_up()
             self.pop_up()
             k=len(self.final_winner)
             for i in self.final_winner:
                 self.player_budget_dic[i]+=int(self.total_pot/k)
-            
+       
         self.final_winner.clear()
         self.winner_pop_up_list.clear()
         self.total_pot=0
@@ -239,8 +242,25 @@ class Game(QMainWindow):
         self.budget_check_dict=self.player_budget_dic.copy()
         self.screen.btn_bet.setEnabled(True)
         self.screen.slider.setEnabled(True)
-        self.all_in_dict.clear()
+        self.all_in_dict={}
+        list=[]
+        for i,j in self.player_budget_dic.items():
+            if j==0:
+                list.append(i)
+        for i in list:
+            self.player_budget_dic.pop(i)
+
         self.budget_copy=self.player_budget_dic.copy() 
+
+        if len(self.player_list)==1:
+            self.budget_assign()
+            icon = QtGui.QIcon()
+            icon.addPixmap(QtGui.QPixmap(":/icon/AH.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+            self.messagebox=QtWidgets.QMessageBox()
+            self.messagebox.setText(f"Winer is\n{self.player_list[0]}")
+            self.messagebox.setWindowTitle('Game is finished     ')
+            self.messagebox.setWindowIcon(icon)
+            self.messagebox.exec_()
 
     def bet_btn(self):     
         self.player_bet_dic[self.player]=self.slider_value
@@ -280,12 +300,23 @@ class Game(QMainWindow):
                 for i,j in self.player_bet_dic.items():
                         if j<self.max_bet:
                             self.bet_check_dict[i]=self.max_bet-j
-         
+        if self.count_bet==0:
+            if len(self.player_bet_dic)<=1 and min(self.total_bet.values())>0:
+                self.board(3)
+                self.board(4)
+                self.board(5)
+                self.finish_turn()
+        if self.count_bet==1:
+            if len(self.player_bet_dic)<2:
+                self.board(3)
+                self.board(4)
+                self.board(5)
+                self.finish_turn()            
         self.playercountincrease()
         self.budget_assign()
         self.player_turn()
         self.img_assign()
-
+        
     def slider_increase(self,value):
         self.screen.btn_bet.setText(str(value))
         self.slider_value=value
@@ -314,13 +345,29 @@ class Game(QMainWindow):
             b=int(self.player[-1])+1
             c='player'+str(b)
             self.player=c
+        if self.player not in self.player_bet_dic.keys():
+            self.playercountincrease()
+            self.img_assign()
         self.screen.slider.setMaximum(self.player_budget_dic[self.player])
         self.screen.btn_bet.setText(str(self.max_bet))
         self.screen.slider.setMinimum(self.max_bet)
         self.screen.slider.setValue(self.max_bet)
-        if self.player not in self.player_bet_dic.keys():
-            self.playercountincrease()
-            self.img_assign()
+        a=max(self.budget_copy.values())
+        if self.budget_copy[self.player]>=a:
+            max1 = max(self.budget_copy.values())
+            max2 = 0
+            list=[]
+            for v in self.budget_copy.values():
+                if v==max1:
+                    list.append(v)
+                if(v>max2 and v<max1):
+                        max2 = v
+                if len(list)>1:
+                    max2=max1                   
+            self.screen.slider.setMaximum(max2)
+            if self.turn_count>0:
+                self.screen.slider.setMaximum(max2-self.total_bet[self.player])
+
         if self.budget_copy[self.player]<=max(self.total_bet.values()):          
                 self.screen.btn_bet.setEnabled(False)
                 self.screen.slider.setEnabled(False)
@@ -329,9 +376,7 @@ class Game(QMainWindow):
 "font: 12pt \"MS Shell Dlg 2\";\n"
 "color: rgb(0, 0, 0);\n"
 "border-radius:20px;\n"
-"background-color: rgb(255, 255, 0);\n"
-"\n"
-"")
+"background-color: rgb(255, 255, 0);\n""\n""")
         elif self.count_bet==0 and self.budget_copy[self.player]>max(self.total_bet.values()):
                 self.screen.btn_bet.setEnabled(True)
                 self.screen.slider.setEnabled(True)
@@ -340,26 +385,40 @@ class Game(QMainWindow):
 "font: 12pt \"MS Shell Dlg 2\";\n"
 "color: rgb(255, 255, 255);\n"
 "border-radius:20px;\n"
-"background-color: rgb(0, 0, 255);\n"
-"\n"
-"")
+"background-color: rgb(0, 0, 255);\n""\n""")
         else:
                 self.screen.btn_call.setText("CALL")
                 self.screen.btn_call.setStyleSheet("border:none;\n"
 "font: 12pt \"MS Shell Dlg 2\";\n"
 "color: rgb(255, 255, 255);\n"
 "border-radius:20px;\n"
-"background-color: rgb(0, 0, 255);\n"
-"\n"
-"")
+"background-color: rgb(0, 0, 255);\n""\n""")
             
     def budget_assign(self):
-        self.screen.label_p1budget.setText(str(self.player_budget_dic['player1']))
-        self.screen.label_p2budget.setText(str(self.player_budget_dic['player2']))
-        self.screen.label_p3budget.setText(str(self.player_budget_dic['player3']))
-        self.screen.label_p4budget.setText(str(self.player_budget_dic['player4']))
-        self.screen.label_p5budget.setText(str(self.player_budget_dic['player5']))
-        self.screen.label_p6budget.setText(str(self.player_budget_dic['player6']))
+        try:
+            self.screen.label_p1budget.setText(str(self.player_budget_dic['player1']))
+        except:
+            pass
+        try:
+            self.screen.label_p2budget.setText(str(self.player_budget_dic['player2']))
+        except:
+            pass
+        try:
+            self.screen.label_p3budget.setText(str(self.player_budget_dic['player3']))
+        except:
+            pass
+        try:
+            self.screen.label_p4budget.setText(str(self.player_budget_dic['player4']))
+        except:
+            pass
+        try:
+            self.screen.label_p5budget.setText(str(self.player_budget_dic['player5']))
+        except:
+            pass
+        try:
+            self.screen.label_p6budget.setText(str(self.player_budget_dic['player6']))
+        except:
+            pass
 
     def img_assign(self):
         self.screen.pot.setText(str(sum(self.total_bet.values())))
@@ -375,7 +434,6 @@ class Game(QMainWindow):
             self.screen.label_p5bet.setText(str(self.player_bet_dic['player5']))
         if 'player6' in self.player_bet_dic.keys():
             self.screen.label_p6bet.setText(str(self.player_bet_dic['player6']))
-
         if self.player == 'player1':
             self.screen.p1_card1.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc[self.player][0]}.png"))
             self.screen.p1_card2.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc[self.player][1]}.png"))
@@ -475,7 +533,43 @@ class Game(QMainWindow):
                 self.total_bet[self.player]+=self.slider_value
                 self.player_bet_dic[self.player]=self.max_bet
 
-            if self.player == self.a:            
+            if self.player == self.a:
+                for i,j in self.player_budget_dic.items():
+                    if j==0:
+                        
+                        if i not in self.all_in_dict.keys():
+                            self.player_bet_dic.pop(i)
+                            self.all_in_dict[i]= self.budget_copy[i]
+                            if i=='player1':
+                                self.screen.label_p1bet.setText("ALL IN")
+                                self.screen.label_p1bet.setStyleSheet("background-color: rgb(255,255,0);\n"
+"border-radius:20px;\n""")
+                            elif i=='player2':
+                                self.screen.label_p2bet.setText("ALL IN")
+                                self.screen.label_p2bet.setStyleSheet("background-color: rgb(255,255,0);\n"
+"border-radius:20px;\n""")
+                                
+                            elif i=='player3':
+                                self.screen.label_p3bet.setText("ALL IN")
+                                self.screen.label_p3bet.setStyleSheet("background-color: rgb(255,255,0);\n"
+"border-radius:20px;\n""")
+                            elif i=='player4':
+                                self.screen.label_p4bet.setText("ALL IN")
+                                self.screen.label_p4bet.setStyleSheet("background-color: rgb(255,255,0);\n"
+"border-radius:20px;\n""")
+                            elif i=='player5':
+                                self.screen.label_p5bet.setText("ALL IN")
+                                self.screen.label_p5bet.setStyleSheet("background-color: rgb(255,255,0);\n"
+"border-radius:20px;\n""")
+                            elif i=='player6':
+                                self.screen.label_p6bet.setText("ALL IN")
+                                self.screen.label_p6bet.setStyleSheet("background-color: rgb(255,255,0);\n"
+"border-radius:20px;\n""")
+                        try:
+                            self.bet_check_dict.pop(self.player)
+                        except:
+                            pass
+
                 groups = itertools.groupby(self.player_bet_dic.values()) 
                 next(groups, None)
                 if next(groups, None) is None:
@@ -539,14 +633,25 @@ class Game(QMainWindow):
                     self.count_bet=0
                 else:    
                     if self.turn_count==4:
-                        self.finish_turn()                                                       
+                        self.finish_turn() 
+        if self.count_bet==0:
+            if len(self.player_bet_dic)<=1 and min(self.total_bet.values())>0:
+                self.board(3)
+                self.board(4)
+                self.board(5)
+                self.finish_turn()
+        if self.count_bet==1:
+            if len(self.player_bet_dic)<2:
+                self.board(3)
+                self.board(4)
+                self.board(5)
+                self.finish_turn()
         self.playercountincrease()
         self.budget_assign()
         self.player_turn()
         self.img_assign() 
     
     def resigned_image(self,a,b,c):
-
         if self.player=='player1':
             self.screen.label_p1bet.setText(a)
             self.screen.label_p1bet.setFont(QFont('Arial', b))
@@ -581,8 +686,7 @@ class Game(QMainWindow):
             self.player_bet_dic.pop(self.player)
             self.player_card_disc.pop(self.player)
             self.resigned_image('Resigned',10,'rgb(255,0,0)')
-            
-        
+                    
         if self.player == self.a:            
             groups = itertools.groupby(self.player_bet_dic.values()) 
             next(groups, None)
@@ -606,11 +710,9 @@ class Game(QMainWindow):
                             self.a='player6'
                         else:    
                             self.a='player'+str(int(self.a[-1])-1)
-
                 else:    
                     if self.turn_count==4:
-                        self.finish_turn()
-                                                
+                        self.finish_turn()                                               
             else:
                 self.count_bet=1
                 self.screen.btn_bet.setEnabled(False)
@@ -650,16 +752,22 @@ class Game(QMainWindow):
                             self.a='player6'
                         else:    
                             self.a='player'+str(int(self.a[-1])-1)
-                    self.count_bet=0
-                                    
+                    self.count_bet=0                                    
                 elif self.turn_count==4:
                     self.finish_turn()
                 
-        if len(self.player_bet_dic)<2:
-            self.board(3)
-            self.board(4)
-            self.board(5)
-            self.finish_turn()
+        if self.count_bet==0:
+            if len(self.player_bet_dic)<1 :
+                self.board(3)
+                self.board(4)
+                self.board(5)
+                self.finish_turn()
+        if self.count_bet==1:
+            if len(self.player_bet_dic)<2:
+                self.board(3)
+                self.board(4)
+                self.board(5)
+                self.finish_turn()
         self.playercountincrease()
         self.budget_assign()
         self.player_turn()       
@@ -688,9 +796,7 @@ class Game(QMainWindow):
                     self.deck.append(str(j)+i)
     
 
-    
-                  
-              
+             
      
 app = QApplication(sys.argv)
 mainwindow = Game()
