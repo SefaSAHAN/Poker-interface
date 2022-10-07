@@ -435,8 +435,8 @@ class Game(QMainWindow):
         if 'player6' in self.player_bet_dic.keys():
             self.screen.label_p6bet.setText(str(self.player_bet_dic['player6']))
         if self.player == 'player1':
-            self.screen.p1_card1.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc[self.player][0]}.png"))
-            self.screen.p1_card2.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc[self.player][1]}.png"))
+            self.screen.p1_card1.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[self.player][0]}.png"))
+            self.screen.p1_card2.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[self.player][1]}.png"))
             self.screen.p6_card1.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))
             self.screen.p6_card2.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))
             self.screen.p2_card1.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))
@@ -448,8 +448,8 @@ class Game(QMainWindow):
             self.screen.p5_card1.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))
             self.screen.p5_card2.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))
         elif self.player == 'player2':
-            self.screen.p2_card1.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc[self.player][0]}.png"))
-            self.screen.p2_card2.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc[self.player][1]}.png"))
+            self.screen.p2_card1.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[self.player][0]}.png"))
+            self.screen.p2_card2.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[self.player][1]}.png"))
             self.screen.p1_card1.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))
             self.screen.p1_card2.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))
             self.screen.p6_card1.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))
@@ -461,8 +461,8 @@ class Game(QMainWindow):
             self.screen.p5_card1.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))
             self.screen.p5_card2.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))            
         elif self.player == 'player3':
-            self.screen.p3_card1.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc[self.player][0]}.png"))
-            self.screen.p3_card2.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc[self.player][1]}.png"))
+            self.screen.p3_card1.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[self.player][0]}.png"))
+            self.screen.p3_card2.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[self.player][1]}.png"))
             self.screen.p2_card1.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))
             self.screen.p2_card2.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))
             self.screen.p6_card1.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))
@@ -474,8 +474,8 @@ class Game(QMainWindow):
             self.screen.p1_card1.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))
             self.screen.p1_card2.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))
         elif self.player == 'player4':
-            self.screen.p4_card1.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc[self.player][0]}.png"))
-            self.screen.p4_card2.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc[self.player][1]}.png"))
+            self.screen.p4_card1.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[self.player][0]}.png"))
+            self.screen.p4_card2.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[self.player][1]}.png"))
             self.screen.p3_card1.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))
             self.screen.p3_card2.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))
             self.screen.p6_card1.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))
@@ -487,8 +487,8 @@ class Game(QMainWindow):
             self.screen.p1_card1.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))
             self.screen.p1_card2.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))
         elif self.player == 'player5':
-            self.screen.p5_card1.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc[self.player][0]}.png"))
-            self.screen.p5_card2.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc[self.player][1]}.png"))
+            self.screen.p5_card1.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[self.player][0]}.png"))
+            self.screen.p5_card2.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[self.player][1]}.png"))
             self.screen.p4_card1.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))
             self.screen.p4_card2.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))
             self.screen.p6_card1.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))
@@ -500,8 +500,8 @@ class Game(QMainWindow):
             self.screen.p1_card1.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))
             self.screen.p1_card2.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))            
         elif self.player == 'player6':
-            self.screen.p6_card1.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc[self.player][0]}.png"))
-            self.screen.p6_card2.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc[self.player][1]}.png"))
+            self.screen.p6_card1.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[self.player][0]}.png"))
+            self.screen.p6_card2.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc2[self.player][1]}.png"))
             self.screen.p5_card1.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))
             self.screen.p5_card2.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))
             self.screen.p2_card1.setPixmap(QtGui.QPixmap(f":/icon/1B.png"))
@@ -757,7 +757,7 @@ class Game(QMainWindow):
                     self.finish_turn()
                 
         if self.count_bet==0:
-            if len(self.player_bet_dic)<1 :
+            if len(self.player_bet_dic)<=1 :
                 self.board(3)
                 self.board(4)
                 self.board(5)
