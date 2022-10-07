@@ -67,9 +67,10 @@ class winner():
 			self.player_control_dic[d]=e
 
 	def f_higher_winnercheck(self):		
-		b={}
+		
 		check=True
 		while check:
+			b={}
 			for i,j in self.higher_winner_check_dict.items():
 				k=max(j)
 				b[i]=k
@@ -88,8 +89,22 @@ class winner():
 					self.higher_winner_check_dict.pop(i)
 			except:
 				pass
+			if len(self.higher_winner_check_dict)== 1:
+				check=False
+				break
+			groups = itertools.groupby(self.higher_winner_check_dict.values()) 
+			next(groups, None)
+			if next(groups, None) is None:     
+				check=False 
+				break 
+			y=[]
 			for i,j in self.higher_winner_check_dict.items():        
 				j.pop(0)
+				if len(j)==0:
+					y.append(i)
+			for i in y:
+				self.higher_winner_check_dict.pop(i)
+
 			groups = itertools.groupby(self.higher_winner_check_dict.values()) 
 			next(groups, None)
 			if next(groups, None) is None:     
@@ -390,7 +405,12 @@ class winner():
 					except:
 						pass
 					kontroldublicate.append(a)
-			kontroldublicate.sort(reverse=True)		
+			kontroldublicate.sort(reverse=True)
+			while True:
+				if len(kontroldublicate)==5:
+					break
+				if len(kontroldublicate)>5:
+					kontroldublicate.pop()		
 			self.higher_winner_check_dict[e]=kontroldublicate
 		self.f_higher_winnercheck()
 		if len(self.winner_list)>0:
@@ -535,7 +555,7 @@ class winner():
 			pass
 
 		if len(self.winner_list)>2:
-			self.higher_winner_check_dict.clear()
+			self.higher_winner_check_dict={}
 			for i in self.winner_list[:-1]:
 				a=[]
 				for k ,l in self.player_control_dic.items():
@@ -608,22 +628,26 @@ if __name__ == "__main__":
 	symbol=["D","C","H","S"]
 	counts=list(range(1,14))
 	deck=[]
-	for i in symbol:
-		for j in counts:
-			if j==1:
-				j="A"
-				deck.append(str(j)+i)
-			elif j==11:
-				j="J"
-				deck.append(str(j)+i)
-			elif j==12:
-				j="Q"
-				deck.append(str(j)+i)
-			elif j==13:
-				j="K"
-				deck.append(str(j)+i)
-			else:
-				deck.append(str(j)+i)
+	def deck_assign():
+		global deck
+		deck=[]
+		for i in symbol:
+			for j in counts:
+				if j==1:
+					j="A"
+					deck.append(str(j)+i)
+				elif j==11:
+					j="J"
+					deck.append(str(j)+i)
+				elif j==12:
+					j="Q"
+					deck.append(str(j)+i)
+				elif j==13:
+					j="K"
+					deck.append(str(j)+i)
+				else:
+					deck.append(str(j)+i)
+	
 
 	playerlist0=list(range (1,7))
 	playerlist=[]
@@ -633,6 +657,8 @@ if __name__ == "__main__":
 	board_cards_list=[]
 	
 	def board(a):
+		global board_cards_list
+		board_cards_list=[]
 		board_cards_list.extend(random.sample(deck,a))
 		for j in board_cards_list:
 			try:
@@ -643,13 +669,50 @@ if __name__ == "__main__":
 		return board_cards_list
 
 	playerhands=[]
-	for i in playerlist:
-		c= random.sample(deck, 2)
-		playerhands.append(c)
-		for j in c:
-			deck.remove(j)
-	player_card_disc= dict(zip(playerlist,playerhands))
-	print(player_card_disc)
+	def playerhands_assign():
+		global player_card_disc
+		global playerhands
+		player_card_disc=[]
+		playerhands=[]
+		for i in playerlist:
+			c= random.sample(deck, 2)
+			playerhands.append(c)
+			for j in c:
+				deck.remove(j)
+		player_card_disc= dict(zip(playerlist,playerhands))
+		print(player_card_disc)
+
+	deck_assign()
 	board(5)
+	playerhands_assign()
 	win = winner(player_card_disc,board_cards_list)
 	a = win.winner_list
+	
+
+	# activate this code to see how many times do you need to run program for Royalflush or something else
+
+	# z=0
+	# while True:
+	# 	deck_assign()
+	# 	board(5)
+	# 	playerhands_assign()
+	# 	win = winner(player_card_disc,board_cards_list)
+	# 	a = win.winner_list
+	# 	z+=1
+	# 	print(z)
+	# 	if len(a)>5 or z==40000:
+	# 		break
+	# 	if 'Royalflush' in a:
+	# 	 	break
+	# 	if 'Flushstraiht' in a:
+	# 		break
+	# 	if 'Four of a kind' in a:
+	# 		break
+	# 	if 'Full house' in a and len(a)>2 :
+	# 		break
+	# 	if 'Flush' in a:
+	# 		break
+	# 	if 'Straight' in a:
+	# 		break
+
+
