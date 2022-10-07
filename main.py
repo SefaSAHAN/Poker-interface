@@ -108,26 +108,40 @@ class Game(QMainWindow):
         f=''
         g=''
         h=''
+        i=''
+        try:
+            if len(self.small_pot)>0:
+                i=self.small_pot
+        except:
+            pass
         try:
             c=b[0]
             d=b[1]
             e=b[2]
             f=b[3]
             g=b[4]
-            h=b[5]
+            h=b[5]   
         except:
             pass            
-        self.messagebox.setText(f"{c}\n{d}\n{e}\n{f}\n{g}\n{h}\n\n{self.winner_pop_up_list[-1]}")
+        self.messagebox.setText(f"{c}\n{d}\n{e}\n{f}\n{g}\n{h}{i}\n\n{self.winner_pop_up_list[-1]}")
         self.messagebox.setWindowTitle('Winner            ')
         self.messagebox.setWindowIcon(icon)
         self.messagebox.exec_()
 
     def finish_turn(self):
+        self.small_pot=''
         self.budget_assign()
         self.img_assign()
         self.final_card_show_up()    
         self.total_pot=sum(self.total_bet.values())
         self.screen.pot.setText(str(sum(self.total_bet.values())))
+
+        q=self.all_in_dict.copy()
+
+        for k,l in q.items():
+            if l == max(self.total_bet.values()):
+                self.all_in_dict.pop(k)
+
 
         while len(self.all_in_dict)>0:
             min_value = min(self.all_in_dict.values())
@@ -171,6 +185,7 @@ class Game(QMainWindow):
 
             self.total_pot-=self.winner_pot  
             if self.winner_pot>0:
+                self.small_pot='\nSmall pot is \n'+str(self.winner_pot)
                 self.final_card_show_up()
                 self.pop_up()
                 self.budget_assign()
@@ -181,7 +196,9 @@ class Game(QMainWindow):
                 self.player_card_disc.pop(i)
                 
             self.final_winner.clear()
-            self.winnerpot=0
+        
+        self.small_pot=''
+            
 
         if self.total_pot>0:            
             win = winner(self.player_card_disc,self.board_cards_list)
@@ -192,6 +209,29 @@ class Game(QMainWindow):
             k=len(self.final_winner)
             for i in self.final_winner:
                 self.player_budget_dic[i]+=int(self.total_pot/k)
+
+        list=[]
+        for i,j in self.player_budget_dic.items():
+            if j==0:
+                list.append(i)
+        for i in list:
+            try:
+                self.player_list.remove(i)
+                if i=='player1':
+                        self.screen.label_p1bet.setText("OUT")
+                elif i=='player2':
+                    self.screen.label_p2bet.setText("OUT")
+                elif i=='player3':
+                    self.screen.label_p3bet.setText("OUT")
+                elif i=='player4':
+                    self.screen.label_p4bet.setText("OUT")
+                elif i=='player5':
+                    self.screen.label_p5bet.setText("OUT")
+                elif i=='player6':
+                    self.screen.label_p6bet.setText("OUT")
+            except:
+                pass
+            self.player_budget_dic.pop(i)
        
         self.final_winner.clear()
         self.winner_pop_up_list.clear()
@@ -243,12 +283,7 @@ class Game(QMainWindow):
         self.screen.btn_bet.setEnabled(True)
         self.screen.slider.setEnabled(True)
         self.all_in_dict={}
-        list=[]
-        for i,j in self.player_budget_dic.items():
-            if j==0:
-                list.append(i)
-        for i in list:
-            self.player_budget_dic.pop(i)
+
 
         self.budget_copy=self.player_budget_dic.copy() 
 
