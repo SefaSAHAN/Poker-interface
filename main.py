@@ -1,16 +1,15 @@
+from pokerscreen import Ui_MainWindow
+from winnercheck import winner
 import sys
-import os
-import more_itertools as mit
 import random
 import itertools
-from winnercheck import winner
 from PyQt5.QtWidgets import * 
 from PyQt5.QtGui import * 
 from PyQt5.QtCore import *
 from PyQt5.QtWidgets import QDialog, QApplication, QMainWindow
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
-from pokerscreen import Ui_MainWindow
+
 
 class Game(QMainWindow):
     def __init__(self):
@@ -296,7 +295,7 @@ class Game(QMainWindow):
             self.messagebox.setWindowTitle('Game is finished     ')
             self.messagebox.setWindowIcon(icon)
             self.messagebox.exec_()
-
+           
     def bet_btn(self):     
         self.player_bet_dic[self.player]=self.slider_value
         self.total_bet[self.player]+=self.slider_value   
@@ -832,7 +831,7 @@ class Game(QMainWindow):
     
 
              
-     
+
 app = QApplication(sys.argv)
 mainwindow = Game()
 widget = QtWidgets.QStackedWidget()
