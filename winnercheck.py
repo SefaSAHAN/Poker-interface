@@ -55,10 +55,9 @@ class winner():
 					a=12
 				elif a=="J":
 					a=11
-				try:
+				else:
 					a=int(a)
-				except:
-					pass
+				
 				kontroldublicate.append(a)		
 			self.player_control_dic[e]=kontroldublicate
 
@@ -75,20 +74,18 @@ class winner():
 				k=max(j)
 				b[i]=k
 			x=''
-			try:
+			if len(b.values())>0:
 				c=max(b.values())
-			except:
-				pass
+		
 			d=[]
 			for i,j in b.items():
 				if j<c:
 					d.append(i)
-			try:
-				for i in d:
-					b.pop(i)
-					self.higher_winner_check_dict.pop(i)
-			except:
-				pass
+			
+			for i in d:
+				b.pop(i)
+				self.higher_winner_check_dict.pop(i)
+			
 			if len(self.higher_winner_check_dict)== 1:
 				check=False
 				break
@@ -224,10 +221,10 @@ class winner():
 					newliste.append(12)
 				elif j=="J":
 					newliste.append(11)
-				try:
+				else:
 					newliste.append(int(j))
-				except:
-					pass
+				# except:
+				# 	pass
 			newliste.sort()
 			grplist = [list(group) for group in mit.consecutive_groups(newliste)]
 
@@ -235,10 +232,10 @@ class winner():
 				if len(k)>4:
 					self.control_element=False
 					resultdict[e]=max(k)
-		try:
+		
+		if len(resultdict)>0:
 			key = max(resultdict, key = lambda z: resultdict[z])
-		except:
-			pass
+		
 		winnercheck={}
 		d=0
 		for i,j in resultdict.items():
@@ -265,12 +262,10 @@ class winner():
 				if l==4:
 					self.control_element=False
 					winnercheck[i]=k
-		try:			
+		if len(winnercheck)>0:			
 			key = max(winnercheck, key = lambda z: winnercheck[z])
 			self.winner_list.append(key)
 			self.winner_list.append('Four of a kind')			
-		except:
-			pass
 
 	def full_house(self):
 		self.result_card_dic()
@@ -400,10 +395,8 @@ class winner():
 						a=12
 					elif a=="J":
 						a=11
-					try:
+					else:
 						a=int(a)
-					except:
-						pass
 					kontroldublicate.append(a)
 			kontroldublicate.sort(reverse=True)
 			while True:
@@ -440,10 +433,9 @@ class winner():
 					newliste.append(12)
 				elif j=="J":
 					newliste.append(11)
-				try:
+				else:
 					newliste.append(int(j))
-				except:
-					pass
+				
 			newliste.sort()	
 			grplist = [list(group) for group in mit.consecutive_groups(newliste)]		
 			for j in grplist:
@@ -451,10 +443,9 @@ class winner():
 					self.control_element=False
 					self.player_control_dic[i]=j
 					resultdict[i]=max(j)
-		try:
+		if len(resultdict)>0:
 			key = max(resultdict, key = lambda z: resultdict[z])
-		except:
-			pass
+		
 		winnercheck={}
 
 		for i,j in resultdict.items():
@@ -483,22 +474,20 @@ class winner():
 					self.control_element=False
 					list1.append(j)
 					winnercheck[d]=j
-		try:
+		if len(winnercheck)>0:
 			key = max(winnercheck, key = lambda z: winnercheck[z])
 			key2=winnercheck[key]
-		except:
-			pass
+		
 		c=0
 		for i,j in winnercheck.items():
 			if j==key2:
 				c+=1		
 		if c==1:
-			try:
+			if len(winnercheck)>0:
 				key = max(winnercheck, key = lambda z: winnercheck[z])
 				self.winner_list.append(key)
 				self.winner_list.append('Three of a kind')			
-			except:
-				pass
+		
 		winnercheck2={}		
 		if c>1:
 			for i,j in self.player_control_dic.items():
@@ -533,26 +522,18 @@ class winner():
 		self.dublicatecheckdic()
 		for d,i in self.player_control_dic.items():
 			list1=[]
-
-			for j,k in i.items():
-				
+			for j,k in i.items():				
 				if k==2:
-					list1.append(j)
-		
+					list1.append(j)		
 			if len(list1)>1:
-				self.control_element=False
-				try:
-					list1.sort(reverse=True)
-					self.higher_winner_check_dict[d]=list1
-				except:
-					pass
-				
-		try:
+				self.control_element=False				
+				list1.sort(reverse=True)
+				self.higher_winner_check_dict[d]=list1
+								
+		if len(self.higher_winner_check_dict)>0:
 			self.f_higher_winnercheck()
 			if len(self.higher_winner_check_dict)>0:
 				self.winner_list.append('Two pair')	
-		except:
-			pass
 
 		if len(self.winner_list)>2:
 			self.higher_winner_check_dict={}
@@ -575,21 +556,19 @@ class winner():
 			for j,k in i.items():
 				if k==2:
 					self.control_element=False
-					try:
+					if len(dictionary1)>0:
 						key1= max(dictionary1, key = lambda z: dictionary1[z])
-					except:
-						pass
-					try:
+					
+					
 						if j>dictionary1[key1]:
 							dictionary1.clear()
 							dictionary1[d]=j
-						if j==dictionary1[key1]:
-							dictionary1[d]=j
-					except:
-						pass
+						if key1 in dictionary1:
+							if j==dictionary1[key1]:
+								dictionary1[d]=j
+					
 
-		dictionary2={'player1':0}
-		dictionary3={'player1':[],'player2':[],'player3':[],'player4':[],'player5':[],'player6':[],'player7':[]}		
+		dictionary2={}		
 		if len(dictionary1)==1:
 			for i,j in dictionary1.items():
 				if j>0:
@@ -597,17 +576,15 @@ class winner():
 					
 		elif len(dictionary1)>1:
 			for i,j in dictionary1.items():
-				dictionary2[i]=self.player_control_dic[i]
+				dictionary2[i]=self.player_control_dic[i]		
 			for i,j in dictionary2.items():
 				newlist3=[]				
-				try:
-					for k,l in j.items():
-						newlist3.append(k)
-					if len(newlist3)>0:
-						newlist3.sort(reverse=True)
-						self.higher_winner_check_dict[i]=newlist3						
-				except:
-					pass
+				for k,l in j.items():
+					newlist3.append(k)
+				if len(newlist3)>0:
+					newlist3.sort(reverse=True)
+					self.higher_winner_check_dict[i]=newlist3						
+			
 		self.f_higher_winnercheck()
 		if len(self.winner_list)>0:
 			self.winner_list.append('One pair')
@@ -661,10 +638,7 @@ if __name__ == "__main__":
 		board_cards_list=[]
 		board_cards_list.extend(random.sample(deck,a))
 		for j in board_cards_list:
-			try:
-				deck.remove(j)
-			except:
-				pass
+			deck.remove(j)	
 		print("board:",board_cards_list)
 		return board_cards_list
 
@@ -691,28 +665,29 @@ if __name__ == "__main__":
 
 	# activate this code to see how many times do you need to run program for Royalflush or something else
 
-	# z=0
-	# while True:
-	# 	deck_assign()
-	# 	board(5)
-	# 	playerhands_assign()
-	# 	win = winner(player_card_disc,board_cards_list)
-	# 	a = win.winner_list
-	# 	z+=1
-	# 	print(z)
-	# 	if len(a)>5 or z==40000:
-	# 		break
+	z=0
+	while True:
+		deck_assign()
+		board(5)
+		playerhands_assign()
+		win = winner(player_card_disc,board_cards_list)
+		a = win.winner_list
+		z+=1
+		print(z)
+		if len(a)<2 or z==10000:
+			break
 	# 	if 'Royalflush' in a:
 	# 	 	break
-	# 	if 'Flushstraiht' in a:
-	# 		break
-	# 	if 'Four of a kind' in a:
-	# 		break
+		# if 'Flushstraiht' in a:
+		# 	break
+		# if 'Four of a kind' in a:
+		# 	break
 	# 	if 'Full house' in a and len(a)>2 :
 	# 		break
 	# 	if 'Flush' in a:
 	# 		break
 	# 	if 'Straight' in a:
 	# 		break
+		
 
 
