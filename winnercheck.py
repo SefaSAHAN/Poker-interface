@@ -665,23 +665,23 @@ if __name__ == "__main__":
 
 	# activate this code to see how many times do you need to run program for Royalflush or something else
 
-	z=0
-	while True:
-		deck_assign()
-		board(5)
-		playerhands_assign()
-		win = winner(player_card_disc,board_cards_list)
-		a = win.winner_list
-		z+=1
-		print(z)
-		if len(a)<2 or z==10000:
-			break
+	# z=0
+	# while True:
+	# 	deck_assign()
+	# 	board(5)
+	# 	playerhands_assign()
+	# 	win = winner(player_card_disc,board_cards_list)
+	# 	a = win.winner_list
+	# 	z+=1
+	# 	print(z)
+	# 	if len(a)<2 or z==10000:
+	# 		break
 	# 	if 'Royalflush' in a:
 	# 	 	break
-		# if 'Flushstraiht' in a:
-		# 	break
-		# if 'Four of a kind' in a:
-		# 	break
+	# 	if 'Flushstraiht' in a:
+	# 		break
+	# 	if 'Four of a kind' in a:
+	# 		break
 	# 	if 'Full house' in a and len(a)>2 :
 	# 		break
 	# 	if 'Flush' in a:
