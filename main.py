@@ -13,7 +13,7 @@ from PyQt5.QtWidgets import QMessageBox
 
 class Game(QMainWindow):
 	def __init__(self):
-		super(Game,self).__init__()
+		super().__init__() 
 		self.screen = Ui_MainWindow()
 		self.screen.setupUi(self)
 		self.deck=[]
