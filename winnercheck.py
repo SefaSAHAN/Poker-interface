@@ -1,7 +1,10 @@
-
+from pokerscreen import Ui_MainWindow
 import more_itertools as mit
 import random
 import itertools
+from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QApplication, QLabel,QPushButton,QMainWindow,QMessageBox
+import sys
 
 
 class winner():
@@ -656,14 +659,55 @@ if __name__ == "__main__":
 		player_card_disc= dict(zip(playerlist,playerhands))
 		print(player_card_disc)
 
+	def show_winner():
+		ui.p1_card1.setPixmap(QtGui.QPixmap(f":/icon/{player_card_disc['player1'][0]}.png"))
+		ui.p1_card2.setPixmap(QtGui.QPixmap(f":/icon/{player_card_disc['player1'][1]}.png"))
+		ui.p2_card1.setPixmap(QtGui.QPixmap(f":/icon/{player_card_disc['player2'][0]}.png"))
+		ui.p2_card2.setPixmap(QtGui.QPixmap(f":/icon/{player_card_disc['player2'][1]}.png"))           	
+		ui.p3_card1.setPixmap(QtGui.QPixmap(f":/icon/{player_card_disc['player3'][0]}.png"))
+		ui.p3_card2.setPixmap(QtGui.QPixmap(f":/icon/{player_card_disc['player3'][1]}.png")) 	
+		ui.p4_card1.setPixmap(QtGui.QPixmap(f":/icon/{player_card_disc['player4'][0]}.png"))
+		ui.p4_card2.setPixmap(QtGui.QPixmap(f":/icon/{player_card_disc['player4'][1]}.png"))	
+		ui.p5_card1.setPixmap(QtGui.QPixmap(f":/icon/{player_card_disc['player5'][0]}.png"))
+		ui.p5_card2.setPixmap(QtGui.QPixmap(f":/icon/{player_card_disc['player5'][1]}.png"))           	
+		ui.p6_card1.setPixmap(QtGui.QPixmap(f":/icon/{player_card_disc['player6'][0]}.png"))
+		ui.p6_card2.setPixmap(QtGui.QPixmap(f":/icon/{player_card_disc['player6'][1]}.png"))
+		ui.desk_card1.setPixmap(QtGui.QPixmap(f":/icon/{board_cards_list[0]}.png"))
+		ui.desk_card2.setPixmap(QtGui.QPixmap(f":/icon/{board_cards_list[1]}.png"))
+		ui.desk_card3.setPixmap(QtGui.QPixmap(f":/icon/{board_cards_list[2]}.png"))	
+		ui.desk_card4.setPixmap(QtGui.QPixmap(f":/icon/{board_cards_list[3]}.png"))		
+		ui.desk_card5.setPixmap(QtGui.QPixmap(f":/icon/{board_cards_list[4]}.png"))
+		if 'player1' in a:
+			ui.label_p1bet.setText('Winner')
+		if 'player2' in a:    
+			ui.label_p2bet.setText('Winner')
+		if 'player3' in a:
+			ui.label_p3bet.setText('Winner')
+		if 'player4' in a:
+			ui.label_p4bet.setText('Winner')
+		if 'player5' in a:
+			ui.label_p5bet.setText('Winner')
+		if 'player6' in a:
+			ui.label_p6bet.setText('Winner')
+		ui.label_playerturn.setText(a[-1])
+
 	deck_assign()
 	board(5)
 	playerhands_assign()
+	app = QtWidgets.QApplication(sys.argv)
+	MainWindow = QtWidgets.QMainWindow()
+	ui = Ui_MainWindow()
+	ui.setupUi(MainWindow)
 	win = winner(player_card_disc,board_cards_list)
 	a = win.winner_list
+	def widget_show():
+		show_winner()
+		MainWindow.show()
+	widget_show()
+	
 	
 
-	# activate this code to see how many times do you need to run program for Royalflush or something else
+	# activate this code to see how many times do you need to run program for Royalflush or something else. also deactivate line 691
 
 	# z=0
 	# while True:
@@ -677,17 +721,23 @@ if __name__ == "__main__":
 	# 	if len(a)<2 or z==10000:
 	# 		break
 	# 	if 'Royalflush' in a:
-	# 	 	break
+	# 		widget_show()
+	# 		break
 	# 	if 'Flushstraiht' in a:
+	# 		widget_show()
 	# 		break
 	# 	if 'Four of a kind' in a:
+	# 		widget_show()
 	# 		break
 	# 	if 'Full house' in a and len(a)>2 :
+	# 		widget_show()
 	# 		break
 	# 	if 'Flush' in a:
+	# 		widget_show()
 	# 		break
 	# 	if 'Straight' in a:
+	# 		widget_show()
 	# 		break
 		
-
+	sys.exit(app.exec_())
 
