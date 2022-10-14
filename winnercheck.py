@@ -707,7 +707,7 @@ if __name__ == "__main__":
 	
 	
 
-	# activate this code to see how many times do you need to run program for Royalflush or something else. also deactivate line 691
+	# activate this code to see how many times do you need to run program for Royalflush or something else. also deactivate line 706
 
 	# z=0
 	# while True:
