@@ -15,64 +15,66 @@ class Game(QMainWindow):
 	def __init__(self):
 		super().__init__() 
 		self.screen = Ui_MainWindow()
-		self.screen.setupUi(self)
-		self.deck=[]
-		self.board_cards_list=[]
-		self.symbol=["D","C","H","S"]
+		self.screen.setupUi(self) 
+		self.beginning()		                    
+		self.budget_assign() 
+		self.maxvalue_find()
+		self.screen.slider.setMinimum(self.max_bet)
+		self.screen.slider.setValue(self.max_bet)    	
+		self.img_assign()
+		 
+		#  (to finish the game quickly use this code)
+		# for i in range(23): 
+		#     self.call_btn()
+	
+	def beginning(self):
+		"""
+		This function created to assign some variables for the game at the start
+		
+		Keyword arguments:
+		self.a -- this is the last player on the turn. if someone raise the bid self.a also change.
+		self.budget_check_dict -- if the game turn in self.a and the player bed are not same, this dict is created to ask again 
+		lower bid player to ask call or fold 
+		self.turn_count -- it is created to open board. when board_card openend self.turn_count increase by one
+		self.count_bet -- if the firts turn completed and self.player_bet_dic.values are not same it increase by one
+		self.budget_copy -- it keeps the starting players budget values. it does not change until the finish pop up message
+		self.all_in_dict -- if player bid his total budget it also get in this list 
+		self.total_bet -- from start to finish pop up message it shows player's total bet
+		
+		"""
+		
+		self.a='player6'
 		self.turn_count=0
 		self.count_bet=0
-		self.bet_check_dict={}
-		self.total_bet={}
-		self.a='player6'
-		self.deck_fonk()        
-		self.player = "player1"        
-		self.budget_check_dict={}
-		self.all_in_dict={}
-		self.screen.btn_call.clicked.connect(self.call_btn)
-		self.screen.btn_fold.clicked.connect(self.fold_btn)
-		self.screen.btn_bet.clicked.connect(self.bet_btn)
-		self.screen.slider.valueChanged.connect(self.slider_increase)
 		self.player_list=[]  
 		for i in range(6):
 			self.player_list.append(f"player{i+1}")
-		self.player_hand=[]
-		for i in self.player_list:
-			c= random.sample(self.deck, 2)
-			self.player_hand.append(c)
-			for j in c:
-				self.deck.remove(j)
-		self.player_card_disc= dict(zip(self.player_list,self.player_hand))
-		self.player_card_disc2=self.player_card_disc.copy()        
-		if self.player == 'player1':
-			self.screen.p1_card1.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc[self.player][0]}.png"))
-			self.screen.p1_card2.setPixmap(QtGui.QPixmap(f":/icon/{self.player_card_disc[self.player][1]}.png"))        
 		self.player_budget_dic={}
 		for i in self.player_list:
 			self.player_budget_dic[i]=500
 		self.player_budget_dic['player2']=300
 		self.player_budget_dic['player3']=350
 		self.player_budget_dic['player4']=850
-		self.budget_copy=self.player_budget_dic.copy()   
-		self.budget_assign()
-		self.player_bet_dic={}
+		self.budget_copy=self.player_budget_dic.copy()
+		self.bet_check_dict={}
+		self.player_bet_dic={} 
 		for i in self.player_list:
-			self.player_bet_dic[i]=10      
-		self.screen.slider.setMaximum(self.player_budget_dic[self.player])
-		self.screen.btn_bet.setText(str(self.player_bet_dic[self.player]))
-		self.maxvalue_find()
-		self.screen.slider.setMinimum(self.max_bet)
-		self.screen.slider.setValue(self.max_bet)
-		b=random.sample(self.deck,5)
-		self.board_cards_list.extend(b)
-		for j in b:
-			self.deck.remove(j)        
+			self.player_bet_dic[i]=10 
+		self.deck_fonk()        
+		self.player = "player1"        
+		self.budget_check_dict={}
+		self.all_in_dict={}
+		self.total_bet={}
 		for i in self.player_list:
 			self.total_bet[i]=0  
 		self.final_winner=[]
-		 
-		#  (to finish the game quickly use this code)
-		# for i in range(23): 
-		#     self.call_btn()
+		
+		self.screen.btn_call.clicked.connect(self.call_btn)
+		self.screen.btn_fold.clicked.connect(self.fold_btn)
+		self.screen.btn_bet.clicked.connect(self.bet_btn)
+		self.screen.slider.valueChanged.connect(self.slider_increase)
+		self.screen.slider.setMaximum(self.player_budget_dic[self.player])
+		self.screen.btn_bet.setText(str(self.player_bet_dic[self.player]))
 
 	def call_btn(self):
 		"""This button accept the same bid made before.
@@ -83,11 +85,6 @@ class Game(QMainWindow):
 	If bids are not same creating self.bet_check_dict and deactivate raising bid option. 
 	Then asking again "accept the highest bid or fold" until everyone has same bid or resigned.
 	
-		Keyword arguments:
-		
-		self.all_in_dict , self.player_bet_dic , self.total_bet , self.player_budget_dic ,
-		self.bet_check_dict, self.turn_count ,self.count_bet
-		
 		Return: 
 		self.all_in_dict , self.player_bet_dic , self.total_bet , self.player_budget_dic ,
 		self.bet_check_dict, self.turn_count ,self.count_bet
@@ -524,7 +521,6 @@ class Game(QMainWindow):
 		self.total_pot=0
 		self.turn_count=0
 		self.count_bet=0
-		self.deck=[]
 		self.winner_list=[]
 		self.deck_fonk()
 		self.player_hand=[]
@@ -541,11 +537,6 @@ class Game(QMainWindow):
 		for i in self.player_list:       
 			self.player_bet_dic[i]=10
 			self.total_bet[i]=0
-		self.board_cards_list=[]
-		b=random.sample(self.deck,5)
-		self.board_cards_list.extend(b)
-		for j in b:
-			self.deck.remove(j) 
 		self.bet_check_dict={}
 		for i in self.player_list:
 			self.player=i
@@ -791,6 +782,9 @@ class Game(QMainWindow):
 			self.screen.label_p6bet.setStyleSheet(f" border-radius: 20px; background-color: {c};")
 			
 	def deck_fonk(self):
+		self.symbol=["D","C","H","S"]
+		self.board_cards_list=[]
+		self.deck=[]
 		counts=list(range(1,14))       
 		for i in self.symbol:
 			for j in counts:
@@ -808,6 +802,19 @@ class Game(QMainWindow):
 					self.deck.append(str(j)+i)
 				else:
 					self.deck.append(str(j)+i)
+		b=random.sample(self.deck,5)
+		self.board_cards_list.extend(b)
+		for j in b:
+			self.deck.remove(j)
+		
+		self.player_hand=[]
+		for i in self.player_list:
+			c= random.sample(self.deck, 2)
+			self.player_hand.append(c)
+			for j in c:
+				self.deck.remove(j)
+		self.player_card_disc= dict(zip(self.player_list,self.player_hand))
+		self.player_card_disc2=self.player_card_disc.copy() 
 	
 
 			 
