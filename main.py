@@ -74,7 +74,25 @@ class Game(QMainWindow):
 		# for i in range(23): 
 		#     self.call_btn()
 
-	def call_btn(self):    
+	def call_btn(self):
+		"""This button accept the same bid made before.
+	If the bid bigger then player budget put the player in All_in list and delete
+	from the player_bet_dic.
+	Checking everyone bids every end of the turn if bids are same or not. 
+	If bids are same open the boardcards and increase the self.count turn. 
+	If bids are not same creating self.bet_check_dict and deactivate raising bid option. 
+	Then asking again "accept the highest bid or fold" until everyone has same bid or resigned.
+	
+		Keyword arguments:
+		
+		self.all_in_dict , self.player_bet_dic , self.total_bet , self.player_budget_dic ,
+		self.bet_check_dict, self.turn_count ,self.count_bet
+		
+		Return: 
+		self.all_in_dict , self.player_bet_dic , self.total_bet , self.player_budget_dic ,
+		self.bet_check_dict, self.turn_count ,self.count_bet
+		"""
+
 		self.maxvalue_find()
 		if self.budget_copy[self.player]<=max(self.total_bet.values()):
 			self.all_in_dict[self.player]= self.budget_copy[self.player]
@@ -126,7 +144,6 @@ class Game(QMainWindow):
 						if self.player in self.bet_check_dict.keys():
 							self.bet_check_dict.pop(self.player)
 						
-
 				groups = itertools.groupby(self.player_bet_dic.values()) 
 				next(groups, None)
 				if next(groups, None) is None:
@@ -152,8 +169,7 @@ class Game(QMainWindow):
 							if j<self.max_bet:
 								self.bet_check_dict[i]=self.max_bet-j
 	
-		if self.count_bet==1:        
-			
+		if self.count_bet==1:        			
 			if self.player not in self.all_in_dict.keys():
 				if self.player in self.bet_check_dict:
 					self.player_budget_dic[self.player]-=self.bet_check_dict[self.player]
@@ -401,7 +417,7 @@ class Game(QMainWindow):
 			f=b[3]
 		if len(b)>4:
 			g=b[4]
-		if len(b)>1:
+		if len(b)>5:
 			h=b[5]			
 		self.messagebox.setText(f"{c}\n{d}\n{e}\n{f}\n{g}\n{h}{i}\n\n{self.winner_pop_up_list[-1]}")
 		self.messagebox.setWindowTitle('Winner            ')

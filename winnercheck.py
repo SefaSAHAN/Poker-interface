@@ -273,9 +273,8 @@ class winner():
 	def full_house(self):
 		self.result_card_dic()
 		self.dublicatecheckdic()		
-		list2={}
-		for d,i in self.player_control_dic.items():
-			
+		dic2={}
+		for d,i in self.player_control_dic.items():		
 			for j,k in i.items():
 				x=0
 				list1={}
@@ -287,12 +286,11 @@ class winner():
 						if m==3:
 							list1[l]=3
 							x+=1
-					list2[d]=list1
-		
-		list3={}
-		list6={}
-		list7={}
-		for i,j in list2.items():
+					dic2[d]=list1	
+		dic3={}
+		dic6={}
+		dic7={}
+		for i,j in dic2.items():
 			if len(j)>1:
 				list4=[]
 				list5=[]
@@ -300,6 +298,7 @@ class winner():
 				for k,l in j.items():
 					if l==3:
 						list4.append(k)
+				list4.sort(reverse=True)
 				for k,l in j.items():
 					if l==2:
 						list5.append(k)
@@ -307,41 +306,37 @@ class winner():
 				list4.extend(list5)
 				if len(list4)>2:
 					list4.pop()
-				list3[i]=list4
-
-		for i,j in list3.items():
-			list6[i]=j[0]
-			list7[i]=j[1]
-
-		if len(list6)>0:
-			key= max(list6, key=list6.get)
-			list8=list6.copy()
+				dic3[i]=list4
+		for i,j in dic3.items():
+			dic6[i]=j[0]
+			dic7[i]=j[1]
+		if len(dic6)>0:
+			key= max(dic6, key=dic6.get)
+			list8=dic6.copy()
 			for i,j in list8.items():
-				if j<list6[key]:
-					list6.pop(i)
-					list7.pop(i)			
-			key= max(list7, key=list7.get)
-			list8=list7.copy()
-
+				if j<dic6[key]:
+					dic6.pop(i)
+					dic7.pop(i)			
+			key= max(dic7, key=dic7.get)
+			list8=dic7.copy()
 			for i,j in list8.items():
-				if j<list7[key]:
-					list7.pop(i)
-
-			groups = itertools.groupby(list6.values()) 
+				if j<dic7[key]:
+					dic7.pop(i)
+			groups = itertools.groupby(dic6.values()) 
 			next(groups, None)
 			if next(groups, None) is None:
-				groups1 = itertools.groupby(list7.values()) 
+				groups1 = itertools.groupby(dic7.values()) 
 				next(groups1, None)
 				if next(groups1, None) is None:
-					for i in list7.keys():
+					for i in dic7.keys():
 						self.winner_list.append(i)
 					self.winner_list.append('Full house')
 				else:
-					key= max(list6, key=list7.get)
+					key= max(dic6, key=dic7.get)
 					self.winner_list.append(key)
 					self.winner_list.append('Full house')
 			else:
-				key= max(list6, key=list6.get)
+				key= max(dic6, key=dic6.get)
 				self.winner_list.append(key)
 				self.winner_list.append('Full house')
 
@@ -531,6 +526,8 @@ class winner():
 			if len(list1)>1:
 				self.control_element=False				
 				list1.sort(reverse=True)
+				if len(list1)>2:
+					list1.pop(-1)
 				self.higher_winner_check_dict[d]=list1
 								
 		if len(self.higher_winner_check_dict)>0:
@@ -718,7 +715,7 @@ if __name__ == "__main__":
 	# 	a = win.winner_list
 	# 	z+=1
 	# 	print(z)
-	# 	if len(a)<2 or z==10000:
+	# 	if len(a)>3 or z==10000:
 	# 		break
 	# 	if 'Royalflush' in a:
 	# 		widget_show()
