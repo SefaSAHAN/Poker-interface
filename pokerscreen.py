@@ -80,7 +80,7 @@ class Ui_MainWindow(QMainWindow):
         sizePolicy.setHeightForWidth(self.slider.sizePolicy().hasHeightForWidth())
         self.slider.setSizePolicy(sizePolicy)
         self.slider.setStyleSheet("background-color: rgb(255, 255, 255);")
-        self.slider.setMinimum(0)
+        # self.slider.setMinimum(0)
         self.slider.setMaximum(30000)
         self.slider.setSingleStep(10)
         self.slider.setOrientation(QtCore.Qt.Horizontal)

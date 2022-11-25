@@ -38,11 +38,10 @@ class Game(QMainWindow):
 		self.turn_count -- it is created to open board. when board_card openend self.turn_count increase by one
 		self.count_bet -- if the firts turn completed and self.player_bet_dic.values are not same it increase by one
 		self.budget_copy -- it keeps the starting players budget values. it does not change until the finish pop up message
-		self.all_in_dict -- if player bid his total budget it also get in this list 
+		self.all_in_dict -- if player bid is bigger then his total budget player get in this list 
 		self.total_bet -- from start to finish pop up message it shows player's total bet
 		
 		"""
-		
 		self.a='player6'
 		self.turn_count=0
 		self.count_bet=0
@@ -53,7 +52,7 @@ class Game(QMainWindow):
 		for i in self.player_list:
 			self.player_budget_dic[i]=500
 		self.player_budget_dic['player2']=300
-		self.player_budget_dic['player3']=350
+		self.player_budget_dic['player3']=650
 		self.player_budget_dic['player4']=850
 		self.budget_copy=self.player_budget_dic.copy()
 		self.bet_check_dict={}
@@ -63,12 +62,11 @@ class Game(QMainWindow):
 		self.deck_fonk()        
 		self.player = "player1"        
 		self.budget_check_dict={}
-		self.all_in_dict={}
+		self.all_in_dict={} 
 		self.total_bet={}
 		for i in self.player_list:
 			self.total_bet[i]=0  
-		self.final_winner=[]
-		
+		self.final_winner=[]	
 		self.screen.btn_call.clicked.connect(self.call_btn)
 		self.screen.btn_fold.clicked.connect(self.fold_btn)
 		self.screen.btn_bet.clicked.connect(self.bet_btn)
@@ -78,7 +76,7 @@ class Game(QMainWindow):
 
 	def call_btn(self):
 		"""This button accept the same bid made before.
-	If the bid bigger then player budget put the player in All_in list and delete
+	If the bid bigger then player budget, put the player in All_in list and delete
 	from the player_bet_dic.
 	Checking everyone bids every end of the turn if bids are same or not. 
 	If bids are same open the boardcards and increase the self.count turn. 
@@ -107,40 +105,7 @@ class Game(QMainWindow):
 				self.total_bet[self.player]+=self.slider_value
 				self.player_bet_dic[self.player]=self.max_bet
 
-			if self.player == self.a:
-				for i,j in self.player_budget_dic.items():
-					if j==0:	
-						if i not in self.all_in_dict.keys():
-							self.player_bet_dic.pop(i)
-							self.all_in_dict[i]= self.budget_copy[i]
-							if i=='player1':
-								self.screen.label_p1bet.setText("ALL IN")
-								self.screen.label_p1bet.setStyleSheet("background-color: rgb(255,255,0);\n"
-"border-radius:20px;\n""")
-							elif i=='player2':
-								self.screen.label_p2bet.setText("ALL IN")
-								self.screen.label_p2bet.setStyleSheet("background-color: rgb(255,255,0);\n"
-"border-radius:20px;\n""")
-								
-							elif i=='player3':
-								self.screen.label_p3bet.setText("ALL IN")
-								self.screen.label_p3bet.setStyleSheet("background-color: rgb(255,255,0);\n"
-"border-radius:20px;\n""")
-							elif i=='player4':
-								self.screen.label_p4bet.setText("ALL IN")
-								self.screen.label_p4bet.setStyleSheet("background-color: rgb(255,255,0);\n"
-"border-radius:20px;\n""")
-							elif i=='player5':
-								self.screen.label_p5bet.setText("ALL IN")
-								self.screen.label_p5bet.setStyleSheet("background-color: rgb(255,255,0);\n"
-"border-radius:20px;\n""")
-							elif i=='player6':
-								self.screen.label_p6bet.setText("ALL IN")
-								self.screen.label_p6bet.setStyleSheet("background-color: rgb(255,255,0);\n"
-"border-radius:20px;\n""")
-						if self.player in self.bet_check_dict.keys():
-							self.bet_check_dict.pop(self.player)
-						
+			if self.player == self.a:			
 				groups = itertools.groupby(self.player_bet_dic.values()) 
 				next(groups, None)
 				if next(groups, None) is None:
@@ -155,6 +120,13 @@ class Game(QMainWindow):
 							self.board(5)
 						for i,j in self.player_bet_dic.items():
 							self.player_bet_dic[i]=0
+						while True:
+							if self.a in self.player_bet_dic:
+								break
+							if self.a=='player1':
+								self.a='player6'
+							else:    
+								self.a='player'+str(int(self.a[-1])-1)
 					else:    
 						if self.turn_count==4:
 							self.finish_turn()                                                    
@@ -225,6 +197,38 @@ class Game(QMainWindow):
 		self.player_bet_dic[self.player]=self.slider_value
 		self.total_bet[self.player]+=self.slider_value   
 		self.player_budget_dic[self.player]-=self.slider_value
+		if self.player_budget_dic[self.player]==0:
+						if self.player not in self.all_in_dict.keys():
+							self.player_bet_dic.pop(self.player)
+							self.all_in_dict[self.player]= self.budget_copy[self.player]
+							if self.player=='player1':
+								self.screen.label_p1bet.setText("ALL IN")
+								self.screen.label_p1bet.setStyleSheet("background-color: rgb(255,255,0);\n"
+"border-radius:20px;\n""")
+							elif self.player=='player2':
+								self.screen.label_p2bet.setText("ALL IN")
+								self.screen.label_p2bet.setStyleSheet("background-color: rgb(255,255,0);\n"
+"border-radius:20px;\n""")
+								
+							elif self.player=='player3':
+								self.screen.label_p3bet.setText("ALL IN")
+								self.screen.label_p3bet.setStyleSheet("background-color: rgb(255,255,0);\n"
+"border-radius:20px;\n""")
+							elif self.player=='player4':
+								self.screen.label_p4bet.setText("ALL IN")
+								self.screen.label_p4bet.setStyleSheet("background-color: rgb(255,255,0);\n"
+"border-radius:20px;\n""")
+							elif self.player=='player5':
+								self.screen.label_p5bet.setText("ALL IN")
+								self.screen.label_p5bet.setStyleSheet("background-color: rgb(255,255,0);\n"
+"border-radius:20px;\n""")
+							elif self.player=='player6':
+								self.screen.label_p6bet.setText("ALL IN")
+								self.screen.label_p6bet.setStyleSheet("background-color: rgb(255,255,0);\n"
+"border-radius:20px;\n""")
+						if self.player in self.bet_check_dict.keys():
+							self.bet_check_dict.pop(self.player)
+
 		self.maxvalue_find()
 		if self.player == self.a:
 			groups = itertools.groupby(self.player_bet_dic.values()) 
@@ -523,15 +527,6 @@ class Game(QMainWindow):
 		self.count_bet=0
 		self.winner_list=[]
 		self.deck_fonk()
-		self.player_hand=[]
-		for i in self.player_list:
-			c= random.sample(self.deck, 2)
-			self.player_hand.append(c)
-			for j in c:
-				self.deck.remove(j)
-		self.player_card_disc={}
-		self.player_card_disc= dict(zip(self.player_list,self.player_hand))
-		self.player_card_disc2=self.player_card_disc.copy()
 		self.player_bet_dic={}
 		self.total_bet={}
 		for i in self.player_list:       
