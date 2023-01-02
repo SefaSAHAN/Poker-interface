@@ -73,7 +73,51 @@ class Game(QMainWindow):
 		self.screen.slider.valueChanged.connect(self.slider_increase)
 		self.screen.slider.setMaximum(self.player_budget_dic[self.player])
 		self.screen.btn_bet.setText(str(self.player_bet_dic[self.player]))
-
+  
+	def check_bets(self):
+		"""This function check the players bets are them same or not in last player turn. if same it finishs the turn.
+		
+		"""
+		groups = itertools.groupby(self.player_bet_dic.values()) 
+		next(groups, None)
+		if next(groups, None) is None:
+			self.count_bet=0
+			self.turn_count+=1
+			if self.turn_count==1 or self.turn_count==2 or self.turn_count==3:
+				if self.turn_count==1:
+					self.board(3)
+				elif self.turn_count==2:
+					self.board(4)
+				elif self.turn_count==3:
+					self.board(5)
+				for i,j in self.player_bet_dic.items():
+					self.player_bet_dic[i]=0
+				while True:
+					if self.a in self.player_bet_dic:
+						break
+					if self.a=='player1':
+						self.a='player6'
+					else:    
+						self.a='player'+str(int(self.a[-1])-1)
+			else:    
+				if self.turn_count==4:
+					self.finish_turn()
+		else:        
+			self.a=self.player
+			while True:
+				if self.a in self.player_bet_dic:
+					break
+				if self.a=='player1':
+					self.a='player6'
+				else:    
+					self.a='player'+str(int(self.a[-1])-1)
+			self.count_bet=1
+			self.screen.btn_bet.setEnabled(False)
+			self.screen.slider.setEnabled(False)
+			for i,j in self.player_bet_dic.items():
+					if j<self.max_bet:
+						self.bet_check_dict[i]=self.max_bet-j
+		
 	def call_btn(self):
 		"""This button accept the same bid made before.
 	If the bid bigger then player budget, put the player in All_in list and delete
@@ -106,37 +150,7 @@ class Game(QMainWindow):
 				self.player_bet_dic[self.player]=self.max_bet
 
 			if self.player == self.a:			
-				groups = itertools.groupby(self.player_bet_dic.values()) 
-				next(groups, None)
-				if next(groups, None) is None:
-					self.count_bet=0
-					self.turn_count+=1
-					if self.turn_count==1 or self.turn_count==2 or self.turn_count==3:
-						if self.turn_count==1:
-							self.board(3)
-						elif self.turn_count==2:
-							self.board(4)
-						elif self.turn_count==3:
-							self.board(5)
-						for i,j in self.player_bet_dic.items():
-							self.player_bet_dic[i]=0
-						while True:
-							if self.a in self.player_bet_dic:
-								break
-							if self.a=='player1':
-								self.a='player6'
-							else:    
-								self.a='player'+str(int(self.a[-1])-1)
-					else:    
-						if self.turn_count==4:
-							self.finish_turn()                                                    
-				else:
-					self.count_bet=1
-					self.screen.btn_bet.setEnabled(False)
-					self.screen.slider.setEnabled(False)
-					for i,j in self.player_bet_dic.items():
-							if j<self.max_bet:
-								self.bet_check_dict[i]=self.max_bet-j
+				self.check_bets()
 	
 		if self.count_bet==1:        			
 			if self.player not in self.all_in_dict.keys():
@@ -192,6 +206,34 @@ class Game(QMainWindow):
 		self.playercountincrease()
 		self.budget_assign()
 		self.img_assign() 
+	def show_all_in(self):
+		""""If the player bet his/her all money it show all in in the UI"""
+		
+		if self.player=='player1':
+			self.screen.label_p1bet.setText("ALL IN")
+			self.screen.label_p1bet.setStyleSheet("background-color: rgb(255,255,0);\n"
+"border-radius:20px;\n""")
+		elif self.player=='player2':
+			self.screen.label_p2bet.setText("ALL IN")
+			self.screen.label_p2bet.setStyleSheet("background-color: rgb(255,255,0);\n"
+"border-radius:20px;\n""")
+			
+		elif self.player=='player3':
+			self.screen.label_p3bet.setText("ALL IN")
+			self.screen.label_p3bet.setStyleSheet("background-color: rgb(255,255,0);\n"
+"border-radius:20px;\n""")
+		elif self.player=='player4':
+			self.screen.label_p4bet.setText("ALL IN")
+			self.screen.label_p4bet.setStyleSheet("background-color: rgb(255,255,0);\n"
+"border-radius:20px;\n""")
+		elif self.player=='player5':
+			self.screen.label_p5bet.setText("ALL IN")
+			self.screen.label_p5bet.setStyleSheet("background-color: rgb(255,255,0);\n"
+"border-radius:20px;\n""")
+		elif self.player=='player6':
+			self.screen.label_p6bet.setText("ALL IN")
+			self.screen.label_p6bet.setStyleSheet("background-color: rgb(255,255,0);\n"
+"border-radius:20px;\n""")
 
 	def bet_btn(self):     
 		self.player_bet_dic[self.player]=self.slider_value
@@ -201,68 +243,12 @@ class Game(QMainWindow):
 						if self.player not in self.all_in_dict.keys():
 							self.player_bet_dic.pop(self.player)
 							self.all_in_dict[self.player]= self.budget_copy[self.player]
-							if self.player=='player1':
-								self.screen.label_p1bet.setText("ALL IN")
-								self.screen.label_p1bet.setStyleSheet("background-color: rgb(255,255,0);\n"
-"border-radius:20px;\n""")
-							elif self.player=='player2':
-								self.screen.label_p2bet.setText("ALL IN")
-								self.screen.label_p2bet.setStyleSheet("background-color: rgb(255,255,0);\n"
-"border-radius:20px;\n""")
-								
-							elif self.player=='player3':
-								self.screen.label_p3bet.setText("ALL IN")
-								self.screen.label_p3bet.setStyleSheet("background-color: rgb(255,255,0);\n"
-"border-radius:20px;\n""")
-							elif self.player=='player4':
-								self.screen.label_p4bet.setText("ALL IN")
-								self.screen.label_p4bet.setStyleSheet("background-color: rgb(255,255,0);\n"
-"border-radius:20px;\n""")
-							elif self.player=='player5':
-								self.screen.label_p5bet.setText("ALL IN")
-								self.screen.label_p5bet.setStyleSheet("background-color: rgb(255,255,0);\n"
-"border-radius:20px;\n""")
-							elif self.player=='player6':
-								self.screen.label_p6bet.setText("ALL IN")
-								self.screen.label_p6bet.setStyleSheet("background-color: rgb(255,255,0);\n"
-"border-radius:20px;\n""")
+							self.show_all_in()
 						if self.player in self.bet_check_dict.keys():
 							self.bet_check_dict.pop(self.player)
-
 		self.maxvalue_find()
 		if self.player == self.a:
-			groups = itertools.groupby(self.player_bet_dic.values()) 
-			next(groups, None)
-			if next(groups, None) is None:
-				self.count_bet=0
-				self.turn_count+=1
-				if self.turn_count==1 or self.turn_count==2 or self.turn_count==3:
-					if self.turn_count==1:
-						self.board(3)
-					elif self.turn_count==2:
-						self.board(4)
-					elif self.turn_count==3:
-						self.board(5)
-					for i,j in self.player_bet_dic.items():
-						self.player_bet_dic[i]=0
-				else:    
-					if self.turn_count==4:
-						self.finish_turn()
-			else:        
-				self.a=self.player
-				while True:
-					if self.a in self.player_bet_dic:
-						break
-					if self.a=='player1':
-						self.a='player6'
-					else:    
-						self.a='player'+str(int(self.a[-1])-1)
-				self.count_bet=1
-				self.screen.btn_bet.setEnabled(False)
-				self.screen.slider.setEnabled(False)
-				for i,j in self.player_bet_dic.items():
-						if j<self.max_bet:
-							self.bet_check_dict[i]=self.max_bet-j
+			self.check_bets()
 		if self.count_bet==0:
 			if len(self.player_bet_dic)<=1 and min(self.total_bet.values())>0:
 				self.board(3)
@@ -290,38 +276,7 @@ class Game(QMainWindow):
 			self.resigned_image('Resigned',10,'rgb(255,0,0)')
 					
 		if self.player == self.a:            
-			groups = itertools.groupby(self.player_bet_dic.values()) 
-			next(groups, None)
-			if next(groups, None) is None:
-				self.count_bet=0
-				self.turn_count+=1
-				if self.turn_count==1 or self.turn_count==2 or self.turn_count==3:
-					if self.turn_count==1:
-						self.board(3)
-					elif self.turn_count==2:
-						self.board(4)
-					elif self.turn_count==3:
-						self.board(5)
-					for i,j in self.player_bet_dic.items():
-						self.player_bet_dic[i]=0
-					self.a=self.player
-					while True:
-						if self.a in self.player_bet_dic:
-							break
-						if self.a=='player1':
-							self.a='player6'
-						else:    
-							self.a='player'+str(int(self.a[-1])-1)
-				else:    
-					if self.turn_count==4:
-						self.finish_turn()                                               
-			else:
-				self.count_bet=1
-				self.screen.btn_bet.setEnabled(False)
-				self.screen.slider.setEnabled(False)
-				for i,j in self.player_bet_dic.items():
-						if j<self.max_bet:
-							self.bet_check_dict[i]=self.max_bet-j
+			self.check_bets()
 		
 		if self.count_bet==1:
 			if self.player in self.player_bet_dic:
