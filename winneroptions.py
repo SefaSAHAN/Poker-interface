@@ -1,8 +1,7 @@
-from PyQt5 import QtWidgets,QtCore,QtGui,QtPrintSupport
+from PyQt5 import QtWidgets,QtGui
 from PyQt5.QtWidgets import *
-# from PyQt5.uic import loadUiType
-from winnercheck import winner
-from winnerscreen import Ui_MainWindow
+from ui.winnercheck import winner
+from ui.winnerscreen import Ui_MainWindow
 import sys
 import random
 
@@ -43,6 +42,7 @@ class Game(QMainWindow):
 		self.playerhands_assign()
 		win = winner(self.player_card_dic,self.board_cards_list)
 		self.winner_list = win.winner_list
+		print(self.winner_list)
   	
 	def winner_option(self):	
 		while True:
@@ -124,10 +124,6 @@ class Game(QMainWindow):
 		self.card_shuffle()
 		self.winner_option()
 
-
-
-  
-  
 	def deck_mthd(self):
 		symbol=["D","C","H","S"]
 		counts=list(range(1,14))
@@ -213,6 +209,7 @@ class Game(QMainWindow):
 		if 'player6' in self.winner_list:
 			self.screen.label_p6bet.setText('Winner')
 		self.screen.label_playerturn.setText(self.winner_list[-1])
+		print(self.winner_list)
 
 app = QApplication(sys.argv)
 mainwindow = Game()

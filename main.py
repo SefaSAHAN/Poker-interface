@@ -1,5 +1,5 @@
-from pokerscreen import Ui_MainWindow
-from winnercheck import winner
+from ui.pokerscreen import Ui_MainWindow
+from ui.winnercheck import winner
 import sys
 import random
 import itertools
@@ -52,8 +52,8 @@ class Game(QMainWindow):
 		for i in self.player_list:
 			self.player_budget_dic[i]=500
 		self.player_budget_dic['player2']=300
-		self.player_budget_dic['player3']=650
-		self.player_budget_dic['player4']=850
+		self.player_budget_dic['player3']=400
+		self.player_budget_dic['player4']=800
 		self.budget_copy=self.player_budget_dic.copy()
 		self.bet_check_dict={}
 		self.player_bet_dic={} 

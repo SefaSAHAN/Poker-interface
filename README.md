@@ -1,4 +1,4 @@
 # Poker-game
-You can play the game with main.py
-You can see the poker hands option with winneroptions.py
+Run main.py to play poker
+To see how the game recognize the winner run winneroptions.py
 Enjoy with the game...
